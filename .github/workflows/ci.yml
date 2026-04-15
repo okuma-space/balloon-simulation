@@ -49,3 +49,23 @@ jobs:
             -v ${{ github.workspace }}:/app \
             $IMAGE_NAME:latest \
             bash -c "ruff check /app"
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build-and-push
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      - name: Pull Docker image
+        run: docker pull $IMAGE_NAME:latest
+
+      - name: Run pytest with coverage
+        run: |
+          docker run --rm \
+            -v ${{ github.workspace }}:/app \
+            $IMAGE_NAME:latest \
+            bash -c "pytest py --cov=py --cov-report=term --cov-report=xml"

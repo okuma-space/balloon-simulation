@@ -22,8 +22,9 @@ RUN pip install \
         scipy \
         pandas \
         matplotlib \
-        ruff
-
+        ruff \
+        pytest \
+        pytest-cov
 # 作業ディレクトリ
 WORKDIR /app
 
