@@ -7,7 +7,7 @@ on:
 env:
   IMAGE_NAME: ghcr.io/${{ github.repository }}/balloon-sim
 
-jobs:git
+jobs:
   build-and-push:
     runs-on: ubuntu-latest
 
