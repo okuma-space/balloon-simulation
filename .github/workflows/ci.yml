@@ -43,9 +43,9 @@ jobs:
       - name: Pull Docker image
         run: docker pull $IMAGE_NAME:latest
 
-      - name: Run black inside container
+      - name: Run ruff inside container
         run: |
           docker run --rm \
             -v ${{ github.workspace }}:/app \
             $IMAGE_NAME:latest \
-            bash -c "pip install black && black --check /app"
+            bash -c "ruff check /app"

@@ -16,12 +16,13 @@ RUN dnf -y update && \
 # pip更新
 RUN python3 -m pip install --upgrade pip
 
-# 科学計算系ライブラリ
+# pythonライブラリ
 RUN pip install \
         numpy \
         scipy \
         pandas \
-        matplotlib
+        matplotlib \
+        ruff
 
 # 作業ディレクトリ
 WORKDIR /app
