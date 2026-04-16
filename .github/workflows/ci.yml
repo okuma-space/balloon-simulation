@@ -45,10 +45,9 @@ jobs:
 
       - name: Run ruff inside container
         run: |
-          IMAGE=${{ env.IMAGE_NAME }}
           docker run --rm \
             -v ${{ github.workspace }}:/balloon-simulation \
-            $IMAGE:latest \
+            $IMAGE_NAME:latest \
             bash -c "ruff check /balloon-simulation"
 
   test:
@@ -69,15 +68,4 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}:/balloon-simulation \
             $IMAGE_NAME:latest \
-            bash -c "
-            echo '=== ENV ===' &&
-            env | sort &&
-            echo '=== PYTHONPATH ===' &&
-            echo $PYTHONPATH &&
-            echo '=== PWD ===' &&
-            pwd &&
-            echo '=== TREE ===' &&
-            ls -R py | head -200 &&
-            echo '=== PYTHON IMPORT TEST ===' &&
-            python -c 'import environment; print(\"import OK\")'
-            "
+            bash -c "pytest tests --cov=py --cov-report=term --cov-report=xml"
