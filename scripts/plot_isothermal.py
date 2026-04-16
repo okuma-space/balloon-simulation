@@ -13,7 +13,7 @@ OUTPUT_DIR.mkdir(parents=True, exist_ok=True)
 
 
 def main():
-    altitudes = np.linspace(0, 40000, 500)
+    altitudes = np.linspace(0, 15000, 100)
     densities = [calculate_density(h) for h in altitudes]
 
     fig = go.Figure()
