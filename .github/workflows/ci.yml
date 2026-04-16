@@ -45,10 +45,11 @@ jobs:
 
       - name: Run ruff inside container
         run: |
+          IMAGE=${{ env.IMAGE_NAME }}
           docker run --rm \
-            -v ${{ github.workspace }}:/balloon-simulation
-            $IMAGE_NAME:latest \
-            bash -c "ruff check /app"
+            -v ${{ github.workspace }}:/balloon-simulation \
+            $IMAGE:latest \
+            bash -c "ruff check /balloon-simulation"
 
   test:
     runs-on: ubuntu-latest
@@ -66,6 +67,6 @@ jobs:
       - name: Run pytest with coverage
         run: |
           docker run --rm \
-            -v ${{ github.workspace }}:/balloon-simulation
+            -v ${{ github.workspace }}:/balloon-simulation \
             $IMAGE_NAME:latest \
             bash -c "pytest py --cov=py --cov-report=term --cov-report=xml"

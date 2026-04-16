@@ -16,7 +16,7 @@ learning project for balloon engineering
 ```bash
 docker build -t balloon-sim -f .\tool\Dockerfile .
 
-docker run -it --rm -v ${PWD}:/app balloon-sim
+docker run -it --rm -v ${PWD}:/baloon-simulation balloon-sim
 ```
 
 - pythonフォーマット&スタイルチェック(ruff)
