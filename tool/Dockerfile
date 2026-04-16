@@ -25,7 +25,10 @@ RUN pip install \
         ruff \
         pytest \
         pytest-cov
-# 作業ディレクトリ
-WORKDIR /app
 
+
+WORKDIR /balloon-simulation
+COPY . /balloon-simulation
+
+ENV PYTHONPATH=/balloon-simulation/py
 CMD ["bash"]

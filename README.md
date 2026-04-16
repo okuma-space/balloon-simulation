@@ -1,7 +1,7 @@
 # balloon-simulation
 learning project for balloon engineering
 
-自学習用のリポジトリ
+自学習用のリポジトリです
 
 プロダクトではなく学習リポジトリのため効率重視でREAD ME、コメントともに日本語にて書いています
 
@@ -9,6 +9,7 @@ learning project for balloon engineering
 
 # 学習文献
 - 宇宙工学シリーズ6 気球工学
+- 宇宙システム入門　ロケット・人工衛星の運動
 
 # コマンドシート
 - dockerコマンド
@@ -20,7 +21,8 @@ docker run -it --rm -v ${PWD}:/app balloon-sim
 
 - pythonフォーマット&スタイルチェック(ruff)
 ```bash
-ruff check py
+ruff format py
+ruff check py --fix
 ```
 
 - テスト
