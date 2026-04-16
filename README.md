@@ -3,10 +3,12 @@ learning project for balloon engineering
 
 自学習用のリポジトリ
 
-学習のため効率のためREAD ME、コメントともに日本語にて書いております
+プロダクトではなく学習リポジトリのため効率重視でREAD ME、コメントともに日本語にて書いています
+
+同様に計算部分もC++エンジン化せずにPythonにて試作しています
 
 # 学習文献
--宇宙工学シリーズ6 気球工学
+- 宇宙工学シリーズ6 気球工学
 
 # コマンドシート
 - dockerコマンド
@@ -19,4 +21,14 @@ docker run -it --rm -v ${PWD}:/app balloon-sim
 - pythonフォーマット&スタイルチェック(ruff)
 ```bash
 ruff check py
+```
+
+- テスト
+```bash
+pytest tests
+```
+
+- テスト(カバレッジ付)
+```bash
+pytest tests --cov=py --cov-report=term --cov-report=xml
 ```
