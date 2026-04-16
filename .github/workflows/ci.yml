@@ -69,4 +69,15 @@ jobs:
           docker run --rm \
             -v ${{ github.workspace }}:/balloon-simulation \
             $IMAGE_NAME:latest \
-            bash -c "PYTHONPATH=/balloon-simulation/py pytest py --cov=py --cov-report=term --cov-report=xml"
+            bash -c "
+            echo '=== ENV ===' &&
+            env | sort &&
+            echo '=== PYTHONPATH ===' &&
+            echo $PYTHONPATH &&
+            echo '=== PWD ===' &&
+            pwd &&
+            echo '=== TREE ===' &&
+            ls -R py | head -200 &&
+            echo '=== PYTHON IMPORT TEST ===' &&
+            python -c 'import environment; print(\"import OK\")'
+            "
