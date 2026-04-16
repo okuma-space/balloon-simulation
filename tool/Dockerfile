@@ -24,8 +24,8 @@ RUN pip install \
         matplotlib \
         ruff \
         pytest \
-        pytest-cov
-
+        pytest-cov \
+        plotly
 
 WORKDIR /balloon-simulation
 COPY . /balloon-simulation
