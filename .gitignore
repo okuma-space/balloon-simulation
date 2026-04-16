@@ -1,1 +1,14 @@
+# Python cache
 __pycache__/
+*.py[cod]
+*.pyo
+
+# Ruff
+.ruff_cache/
+
+# Pytest
+.pytest_cache/
+
+# coverage
+.coverage
+htmlcov/

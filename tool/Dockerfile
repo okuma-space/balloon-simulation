@@ -24,8 +24,11 @@ RUN pip install \
         matplotlib \
         ruff \
         pytest \
-        pytest-cov
-# 作業ディレクトリ
-WORKDIR /app
+        pytest-cov \
+        plotly
 
+WORKDIR /balloon-simulation
+COPY . /balloon-simulation
+
+ENV PYTHONPATH=/balloon-simulation/py
 CMD ["bash"]
