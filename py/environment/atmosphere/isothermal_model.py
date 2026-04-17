@@ -22,11 +22,11 @@ def calculate_density(altitude: float) -> float:
     reference: https://glossary.ametsoc.org/wiki/isothermal-atmosphere/
 
     Parameters
-    ----------  
+    ----------
     altitude : float
         高度 [m]
     Returns
-    -------  
+    -------
     density : float
         大気密度 [kg/m^3]
     """

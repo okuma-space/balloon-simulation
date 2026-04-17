@@ -9,30 +9,41 @@ learning project for balloon engineering
 
 作業ログのためにPRは作っていますが、コードレビューは基本的にVsCode上でAIレビューを使っています。
 
+# レポート
+
+詳細レポート
+
 # 学習文献
 - 宇宙工学シリーズ6 気球工学
 - 宇宙システム入門　ロケット・人工衛星の運動
 
-# コマンドシート
-- dockerコマンド
+# ci/workflow
+以下の3ステージで構成
+- build-and-push
+- lint
+- test
+
+# commandシート
+## dockerコマンド
 ```bash
 docker build -t balloon-sim -f .\tool\Dockerfile .
 
 docker run -it --rm -v ${PWD}:/balloon-simulation balloon-sim bash
 ```
 
-- pythonフォーマット&スタイルチェック(ruff)
+## python format & style check(ruff)
 ```bash
-ruff format py
-ruff check py --fix
+ruff ruff format py scripts tests
+ruff check py scripts tests --fix
 ```
 
-- テスト
+## test
+test
 ```bash
 pytest tests
 ```
 
-- テスト(カバレッジ付)
+coverage report
 ```bash
 pytest tests --cov=py --cov-report=term --cov-report=xml
 ```

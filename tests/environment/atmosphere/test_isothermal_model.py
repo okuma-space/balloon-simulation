@@ -1,11 +1,38 @@
-import environment.atmosphere.isothermal_model as isothermal_model
+import pytest
+from environment.atmosphere import isothermal_model
 
-def test_calculate_density():
-    # 海面高度での大気密度はAIR_DENSITY_SEA_LEVELと等しいことを確認
-    assert isothermal_model.calculate_density(0) == isothermal_model.AIR_DENSITY_SEA_LEVEL
+# 許容誤差10[%]
+REL_TOL = 0.1
 
-    # 高度1000mでの大気密度がAIR_DENSITY_SEA_LEVELより小さいことを確認
-    assert isothermal_model.calculate_density(1000) < isothermal_model.AIR_DENSITY_SEA_LEVEL
+# テスト用検証データとして1976 Standard Atmosphere Tableを採用する
+# https://atmos.nmsu.edu/planetary_datasets/earth_temppres.html
+test_data = [
+    (0, 1.225),
+    (1000, 1.1116),
+    (2000, 1.0065),
+    (3000, 0.9091),
+    (4000, 0.8191),
+    (5000, 0.7361),
+    (6000, 0.6597),
+    (7000, 0.5895),
+    (8000, 0.5252),
+    (9000, 0.4663),
+    (10000, 0.4127),
+    (11000, 0.3639),
+    (12000, 0.3108),
+    (13000, 0.2655),
+    (14000, 0.2268),
+    (15000, 0.1937),
+]
 
-    # 高度5000mでの大気密度がAIR_DENSITY_SEA_LEVELより小さいことを確認
-    assert isothermal_model.calculate_density(5000) < isothermal_model.AIR_DENSITY_SEA_LEVEL
+
+@pytest.mark.parametrize("altitude, ref_density", test_data)
+def test_isothermal_density_accuracy(altitude, ref_density):
+    """
+    1976 Standard Atmosphere Tableに対して誤差10[%]以内であることを検証テストする
+    """
+    model_density = isothermal_model.calculate_density(altitude)
+
+    rel_error = abs(model_density - ref_density) / ref_density
+
+    assert rel_error <= REL_TOL
