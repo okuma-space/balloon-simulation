@@ -4,7 +4,7 @@
 ## グラフ
 
 ### 静的表示
-![density](./png/graph.png)
+![density](./docs/png/graph.png)
 
 ### インタラクティブ
-[graph](https://okuma-space.github.io/balloon-simulation/graph.html)
+[graph](https://okuma-space.github.io/balloon-simulation/docs/html/isothermal_density)
