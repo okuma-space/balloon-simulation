@@ -10,8 +10,7 @@ learning project for balloon engineering
 作業ログのためにPRは作っていますが、コードレビューは基本的にVsCode上でAIレビューを使っています。
 
 # レポート
-
-詳細レポート
+[簡易レポート](https://okuma-space.github.io/balloon-simulation/report.html)
 
 # 学習文献
 - 宇宙工学シリーズ6 気球工学
