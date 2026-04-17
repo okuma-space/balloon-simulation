@@ -18,10 +18,12 @@ learning project for balloon engineering
 - 宇宙システム入門　ロケット・人工衛星の運動
 
 # ci/workflow
-以下の3ステージで構成
+以下の4ステージで構成
+deployステージでdocs/report.mdをhtmlとしてリリースする
 - build-and-push
 - lint
 - test
+- deploy
 
 # commandシート
 ## dockerコマンド
