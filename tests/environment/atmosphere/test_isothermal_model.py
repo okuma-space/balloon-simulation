@@ -29,7 +29,7 @@ test_data = [
 @pytest.mark.parametrize("altitude, ref_density", test_data)
 def test_isothermal_density_accuracy(altitude, ref_density):
     """
-    1976 Standard Atmosphere Tableに対して誤差10[%]以内であることを検証テストする
+    1976 US Standard Atmosphere Tableに対して誤差10[%]以内であることを検証テストする
     """
     model_density = isothermal_model.calculate_density(altitude)
 
