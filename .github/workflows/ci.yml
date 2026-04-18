@@ -95,7 +95,7 @@ jobs:
           pandoc docs/report.md \
             -o docs/report.html \
             --standalone \
-            --metadata title="Density Report" \
+            --metadata title="Simulation Learning  Report" \
             --toc
 
       - name: Upload Pages artifact
