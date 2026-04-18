@@ -16,10 +16,15 @@ learning project for balloon engineering
 - 宇宙工学シリーズ6 気球工学
 - 宇宙システム入門　ロケット・人工衛星の運動
 
+# issues
+現時点での改善アイディアなどはissuesに記載.
+
+https://github.com/okuma-space/balloon-simulation/issues
+
 # ci/workflow
 以下の4ステージで構成.
 
-deployステージでdocs/report.mdをhtmlとしてリリースする.
+PRがmergeされる際にdeployステージが実行され、docs/report.mdをhtmlとしてリリースする.
 - build-and-push
 - lint
 - test

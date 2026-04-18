@@ -36,3 +36,24 @@ def calculate_density(altitude: float) -> float:
     density = AIR_DENSITY_SEA_LEVEL * math.exp(-altitude / SCALE_HEIGHT)
 
     return density
+
+
+def calculate_pressure(density: float, altitude: float) -> float:
+    """
+    圧力の計算式
+    Parameters
+    ----------
+    density : float
+        大気の密度 [kg/m^3]
+    altitude : float
+        高度 [m]
+
+    Returns
+    -------
+    float
+        圧力 [Pa]
+    """
+
+    # 宇宙システム入門 P.53 (3.24)
+    # 圧力[Pa] = 大気の密度[kg/m^3] * 重力加速度[m/s^2] *  scale height(H)
+    return density * phys_const.GRAVITY_ACCELERATION * SCALE_HEIGHT
