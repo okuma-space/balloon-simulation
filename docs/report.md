@@ -30,7 +30,7 @@ TODO ここに最終レポートを書く
 - 4層(35~50[km])
   - 235[K]から270[K]までの線形補間
 - 5層 (>50 km)
-  - 270[K]一定(将来的にはここも線形補間とする)
+  - 270[K]一定(将来的にはここも線形補間とする) [issues](https://github.com/okuma-space/balloon-simulation/issues/18)
 
 
 採用しenvironment/atomosphere/layered_temperature_model.pyにて計算している.
