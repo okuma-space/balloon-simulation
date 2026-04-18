@@ -297,6 +297,7 @@ def main():
     balloon = BalloonSystem(
         payload_mass=500.0,  # [kg]
         ground_volume=1578.0,  # [m^3]
+        max_volume=100000.0, # [m^3]
         gas_mass=230.0,  # [kg]
         drag_coefficient=0.47,  # (無次元) 球体では約0.47 (https://www.arc.id.au/CannonballDrag.html?utm_source=chatgpt.com)
     )

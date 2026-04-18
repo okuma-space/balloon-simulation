@@ -81,9 +81,8 @@ def propagate(
         current_time_volume = balloon_mechanics.calculate_volume_at_altitude(
             position[2], balloon.ground_volume
         )
-        if current_time_volume > 100000:
-            current_time_volume = 100000  # 体積の上限を設定（例: 100,000 m^3）
-
+        if current_time_volume > balloon.max_volume:
+            current_time_volume = balloon.max_volume  # 体積の上限を設定
 
         # 断面積[m^2]の更新
         current_time_cross_sectional_area = balloon_mechanics.sphere_cross_section_area(
