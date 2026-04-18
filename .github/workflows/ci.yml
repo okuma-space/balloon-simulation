@@ -24,7 +24,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t $IMAGE_NAME:latest -f tool/Dockerfile .
+          docker build -t $IMAGE_NAME:latest -f tools/Dockerfile .
 
       - name: Push Docker image
         run: |
