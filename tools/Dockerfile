@@ -30,5 +30,5 @@ RUN pip install \
 WORKDIR /balloon-simulation
 COPY . /balloon-simulation
 
-ENV PYTHONPATH=/balloon-simulation/py
+ENV PYTHONPATH=/balloon-simulation/src
 CMD ["bash"]
