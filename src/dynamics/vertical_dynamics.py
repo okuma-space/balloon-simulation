@@ -16,18 +16,27 @@ def propagate(
     propagation_time: timedelta,
 ) -> Trajectory:
     """
-    指定されたpropagation_timeにわたって気球の鉛直ダイナミクスをシミュレートします。
+    指定された propagation_time にわたって気球の鉛直ダイナミクスをシミュレートします。
 
-    Args:
-        balloon (balloon.Balloon): 気球のプロパティを含む気球オブジェクト。
-        epoch_time (datetime): propagatorの開始時刻。
-        initial_position (np.ndarray): 初期位置ベクトル [x, y, z] [m]。
-        initial_velocity (np.ndarray): 初期速度ベクトル [vx, vy, vz] [m/s]。
-        time_step (timedelta): propagator反復のタイムステップ。
-        propagation_time (timedelta): propagatorの総時間。
+    Parameters
+    ----------
+    balloon : balloon.Balloon
+        気球のプロパティを含む気球オブジェクト。
+    epoch_time : datetime
+        propagator の開始時刻。
+    initial_position : np.ndarray
+        初期位置ベクトル [x, y, z] [m]。
+    initial_velocity : np.ndarray
+        初期速度ベクトル [vx, vy, vz] [m/s]。
+    time_step : timedelta
+        propagator 反復のタイムステップ。
+    propagation_time : timedelta
+        propagator の総時間。
 
-    Returns:
-        Trajectory: 気球の時刻、位置、速度の履歴を含むTrajectoryオブジェクト。
+    Returns
+    -------
+    Trajectory
+        気球の時刻、位置、速度の履歴を含む Trajectory オブジェクト。
     """
 
     # propagatorの初期化
@@ -36,13 +45,17 @@ def propagate(
     velocity_vector_list = [initial_velocity.copy()]
     current_time = epoch_time
     end_time = epoch_time + propagation_time
-    time_step_seconds = time_step.total_seconds() # タイムステップを秒に変換
+    time_step_seconds = time_step.total_seconds()  # タイムステップを秒に変換
+    cross_sectional_area = balloon.cross_section_area  # 気球の断面積[m^2]を取得
 
     # propagationループ
     while current_time < end_time:
         # 加速度[m/s^2]の計算
         acceleration = calculate_vertical_acceleration(
-            balloon, position_vector_list[-1]
+            balloon,
+            position_vector_list[-1],
+            velocity_vector_list[-1],
+            cross_sectional_area,
         )
 
         # 簡単なオイラー法で位置と速度を更新する
@@ -61,17 +74,29 @@ def propagate(
 
 
 def calculate_vertical_acceleration(
-    balloon: balloon.Balloon, position_vector: np.ndarray
+    balloon: balloon.Balloon,
+    position_vector: np.ndarray,
+    velocity_vector: np.ndarray,
+    cross_sectional_area: float,
 ) -> np.ndarray:
     """
     気球の浮力と重力に基づいて気球の鉛直加速度を計算する。
 
-    Args:
-        balloon (balloon.Balloon): 気球オブジェクト。
-        position_vector (np.ndarray): 位置ベクトル [x, y, z] [m]。
+    Parameters
+    ----------
+    balloon : balloon.Balloon
+        気球オブジェクト。
+    position_vector : np.ndarray
+        位置ベクトル [x, y, z] [m]
+    velocity_vector : np.ndarray
+        速度ベクトル [vx, vy, vz] [m/s]
+    cross_sectional_area : float
+        気球の断面積 [m^2]
 
-    Returns:
-        np.ndarray: 加速度ベクトル [ax, ay, az] [m/s^2]。
+    Returns
+    -------
+    np.ndarray
+        加速度ベクトル [ax, ay, az] [m/s^2]
     """
 
     # 大気密度[kg/m^3]を計算
@@ -83,9 +108,21 @@ def calculate_vertical_acceleration(
         air_density, balloon.gas_density, balloon.volume
     )
 
+    # 抗力[N]を計算
+    # 風力は一旦0.0[m/s]固定で計算する
+    drag_force = fluid_mechanics.drag_force(
+        air_density,
+        [0.0, 0.0, 0.0],
+        velocity_vector,
+        balloon.drag_coefficient,
+        cross_sectional_area,
+    )[2]  # 鉛直方向の抗力のみを考慮
+
     # 合力(ネットフォース)[N]を計算する
-    # 浮力[N] -重力[N] = ネットフォース[N]
-    net_force = buoyant_force - balloon.mass * phys_const.GRAVITY_ACCELERATION
+    # 浮力[N] + 抗力[N] -重力[N] = ネットフォース[N]
+    net_force = (
+        buoyant_force + drag_force - balloon.mass * phys_const.GRAVITY_ACCELERATION
+    )
 
     # 加速度[m/s^2]を計算
     # ネットフォース[N] / 質量[kg] = 加速度[m/s^2]

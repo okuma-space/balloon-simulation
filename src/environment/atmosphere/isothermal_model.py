@@ -25,6 +25,7 @@ def calculate_density(altitude: float) -> float:
     ----------
     altitude : float
         高度 [m]
+
     Returns
     -------
     density : float

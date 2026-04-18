@@ -9,8 +9,8 @@ learning project for balloon engineering
 
 作業ログのためにPRは作っていますが,コードレビューは基本的にVsCode上でAIレビューを使っています.
 
-# レポート
-[簡易レポート](https://okuma-space.github.io/balloon-simulation/report.html)
+# 結果サマリ
+[結果サマリ](https://okuma-space.github.io/balloon-simulation/report.html)
 
 # 学習文献
 - 宇宙工学シリーズ6 気球工学
@@ -27,7 +27,7 @@ deployステージでdocs/report.mdをhtmlとしてリリースする.
 
 # Directory Structure
 ## docs
-レポート・設計文書
+シミュレーション結果サマリ
 
 ## src
 コア実装コード
