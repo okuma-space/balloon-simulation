@@ -1,4 +1,3 @@
-import sys
 from pathlib import Path
 import numpy as np
 import plotly.graph_objects as go
@@ -18,7 +17,9 @@ def run_isothermal_density_simulation() -> tuple[np.ndarray, np.ndarray]:
     return altitudes, densities
 
 
-def save_density_html(altitudes: np.ndarray, densities: np.ndarray, output_path: Path) -> None:
+def save_density_html(
+    altitudes: np.ndarray, densities: np.ndarray, output_path: Path
+) -> None:
     """高度と密度の配列をプロットしてHTMLファイルに保存。"""
     fig = go.Figure()
     fig.add_trace(
@@ -33,7 +34,9 @@ def save_density_html(altitudes: np.ndarray, densities: np.ndarray, output_path:
     fig.write_html(str(output_path), include_plotlyjs="cdn")
 
 
-def save_density_png(altitudes: np.ndarray, densities: np.ndarray, output_path: Path) -> None:
+def save_density_png(
+    altitudes: np.ndarray, densities: np.ndarray, output_path: Path
+) -> None:
     """高度と密度の配列をプロットしてPNGファイルに保存。"""
     plt.figure()
     plt.plot(densities, altitudes)

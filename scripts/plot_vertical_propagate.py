@@ -1,4 +1,3 @@
-import sys
 from pathlib import Path
 import numpy as np
 import plotly.graph_objects as go
@@ -27,33 +26,106 @@ def simulate_balloon_trajectory(
         time_step,
         propagation_time,
     )
-    times = np.array([ (t - epoch_time).total_seconds() for t in traj.time_list ])
+    # 時刻,位置,速度の配列を取得
+    # 時刻はepoch_timeからの経過秒数に変換
+    times = np.array([(t - epoch_time).total_seconds() for t in traj.time_list])
     positions = np.array(traj.position_vector_list)
+    velocities = np.array(traj.velocity_vector_list)
+
+    # 高度と鉛直速度を抽出
     altitude = positions[:, 2]
-    return times, altitude
+    vertical_velocity = velocities[:, 2]
+
+    return times, altitude, vertical_velocity
 
 
-def save_trajectory_html(time_seconds: np.ndarray, altitude: np.ndarray, output_path: Path) -> None:
-    """高度と時刻の配列をプロットしてHTMLファイルに保存。"""
+def save_trajectory_html(
+    time_seconds: np.ndarray,
+    altitude: np.ndarray,
+    velocity: np.ndarray,
+    output_path: Path,
+) -> None:
+    """高度と速度と時刻の配列をプロットしてHTMLファイルに保存。"""
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=time_seconds, y=altitude, mode="lines", name="Altitude"))
+
+    # 高度（左軸）
+    fig.add_trace(
+        go.Scatter(
+            x=time_seconds,
+            y=altitude,
+            mode="lines",
+            name="Altitude [m]",
+            yaxis="y1",
+        )
+    )
+
+    # 速度（右軸）
+    fig.add_trace(
+        go.Scatter(
+            x=time_seconds,
+            y=velocity,
+            mode="lines",
+            name="Vertical Velocity [m/s]",
+            yaxis="y2",
+        )
+    )
+
     fig.update_layout(
         title="Balloon Trajectory",
-        xaxis_title="Time [s]",
-        yaxis_title="Altitude [m]",
+        xaxis=dict(title="Time [s]"),
+        yaxis=dict(
+            title="Altitude [m]",
+            side="left",
+        ),
+        yaxis2=dict(
+            title="Velocity [m/s]",
+            overlaying="y",
+            side="right",
+        ),
+        legend=dict(x=0.01, y=0.99),
     )
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.write_html(str(output_path), include_plotlyjs="cdn")
 
 
-def save_trajectory_png(time_seconds: np.ndarray, altitude: np.ndarray, output_path: Path) -> None:
-    """高度と時刻の配列をプロットしてPNGファイルに保存。"""
-    plt.figure()
-    plt.plot(time_seconds, altitude)
+def save_trajectory_png(
+    time_seconds: np.ndarray,
+    altitude: np.ndarray,
+    velocity: np.ndarray,
+    output_path: Path,
+) -> None:
+    """高度・速度と時刻の配列をプロットしてPNGファイルに保存。"""
+    fig, ax1 = plt.subplots()
+
+    # altitude（左軸）
+    ax1.plot(time_seconds, altitude, label="Altitude [m]")
+    ax1.set_xlabel("Time [s]")
+    ax1.set_ylabel("Altitude [m]")
+    ax1.grid(True)
+
+    # velocity（右軸）
+    ax2 = ax1.twinx()
+    ax2.plot(time_seconds, velocity, linestyle="--", label="Vertical Velocity [m/s]")
+    ax2.set_ylabel("Velocity [m/s]")
+
+    # 凡例統合（ここが重要）
+    lines1, labels1 = ax1.get_legend_handles_labels()
+    lines2, labels2 = ax2.get_legend_handles_labels()
+
+    ax1.legend(
+        lines1 + lines2,
+        labels1 + labels2,
+        loc="upper right",
+        fontsize=8,
+        frameon=True,
+        labelspacing=0.3,
+        handlelength=1.5,
+        borderpad=0.3,
+    )
+
     plt.title("Balloon Trajectory")
-    plt.xlabel("Time [s]")
-    plt.ylabel("Altitude [m]")
-    plt.grid(True)
+
     output_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_path, dpi=150, bbox_inches="tight")
     plt.close()
@@ -65,6 +137,7 @@ def main():
         mass=1.0,  # [kg]
         gas_density=0.178,  # [kg/m^3] (ヘリウムの密度)　(https://daitoh-mg.jp/1990/01/-helium.html?utm_source=chatgpt.com)
         volume=1.0,  # [m^3]
+        drag_coefficient=0.47,  # (無次元) 球体では約0.47 (https://www.arc.id.au/CannonballDrag.html?utm_source=chatgpt.com)
     )
 
     # 初期位置と速度を定義
@@ -74,10 +147,10 @@ def main():
 
     # 伝播時間とタイムステップを定義
     time_step = timedelta(seconds=1)
-    propagation_duration = timedelta(seconds=3600)
+    propagation_duration = timedelta(seconds=2000)
 
     # シミュレーションを実行して時刻と高度の配列を取得
-    time_seconds, altitude = simulate_balloon_trajectory(
+    time_seconds, altitude, velocity = simulate_balloon_trajectory(
         balloon,
         epoch,
         initial_position,
@@ -90,11 +163,8 @@ def main():
     png_path = OUTPUT_DIR / "png/balloon_trajectory.png"
 
     # HTMLとPNGを保存
-    save_trajectory_html(time_seconds, altitude, html_path)
-    save_trajectory_png(time_seconds, altitude, png_path)
-
-    print(f"saved: {html_path}")
-    print(f"saved: {png_path}")
+    save_trajectory_html(time_seconds, altitude, velocity, html_path)
+    save_trajectory_png(time_seconds, altitude, velocity, png_path)
 
 
 if __name__ == "__main__":
