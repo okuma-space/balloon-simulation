@@ -4,7 +4,6 @@ import plotly.graph_objects as go
 import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from systems.balloon_system import BalloonSystem
-from systems.balloon_state_trajectry import BalloonStateTrajectory
 import dynamics.vertical_dynamics as vertical_dynamics
 
 OUTPUT_DIR = Path("docs")
@@ -16,9 +15,8 @@ def simulate_balloon_trajectory(
     initial_position: np.ndarray,
     initial_velocity: np.ndarray,
     time_step: timedelta,
-        save_state_interval: timedelta,
-    propagation_time: timedelta
-
+    save_state_interval: timedelta,
+    propagation_time: timedelta,
 ) -> tuple[np.ndarray, np.ndarray]:
     """指定されたpropagation_timeにわたって気球の鉛直ダイナミクスをシミュレートし、stateの配列を返す。"""
     traj = vertical_dynamics.propagate(
@@ -27,9 +25,8 @@ def simulate_balloon_trajectory(
         initial_position,
         initial_velocity,
         time_step,
-             save_state_interval,
-        propagation_time
-   
+        save_state_interval,
+        propagation_time,
     )
     # 時刻,位置,速度の配列を取得
     # 時刻はepoch_timeからの経過秒数に変換
@@ -68,11 +65,9 @@ def save_position_trajectory_html(
             mode="lines",
             name="Altitude [m]",
             yaxis="y1",
-            hovertemplate="Time: %{x:.1f}<br>Altitude: %{y:.1f} m"
+            hovertemplate="Time: %{x:.1f}<br>Altitude: %{y:.1f} m",
         )
     )
-
-
 
     # 速度（右軸）
     fig.add_trace(
@@ -82,7 +77,7 @@ def save_position_trajectory_html(
             mode="lines",
             name="Vertical Velocity [m/s]",
             yaxis="y2",
-            hovertemplate="Time: %{x:.1f}<br>Velocity: %{y:.1f} m/s"
+            hovertemplate="Time: %{x:.1f}<br>Velocity: %{y:.1f} m/s",
         )
     )
 
@@ -104,6 +99,7 @@ def save_position_trajectory_html(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.write_html(str(output_path), include_plotlyjs="cdn")
 
+
 def save_volume_area_trajectory_html(
     time_seconds: np.ndarray,
     volume: np.ndarray,
@@ -120,7 +116,7 @@ def save_volume_area_trajectory_html(
             mode="lines",
             name="Volume [m^3]",
             yaxis="y1",
-            hovertemplate="Time: %{x:.1f}<br>Volume: %{y:.1f} m^3"
+            hovertemplate="Time: %{x:.1f}<br>Volume: %{y:.1f} m^3",
         )
     )
 
@@ -131,7 +127,7 @@ def save_volume_area_trajectory_html(
             mode="lines",
             name="Area [m^2]",
             yaxis="y2",
-            hovertemplate="Time: %{x:.1f}<br>Area: %{y:.1f} m^2"
+            hovertemplate="Time: %{x:.1f}<br>Area: %{y:.1f} m^2",
         )
     )
 
@@ -149,6 +145,7 @@ def save_volume_area_trajectory_html(
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.write_html(str(output_path), include_plotlyjs="cdn")
+
 
 def save_gas_density_trajectory_html(
     time_seconds: np.ndarray,
@@ -177,6 +174,7 @@ def save_gas_density_trajectory_html(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.write_html(str(output_path), include_plotlyjs="cdn")
 
+
 def save_trajectory_png(
     time_seconds: np.ndarray,
     altitude: np.ndarray,
@@ -202,8 +200,8 @@ def save_trajectory_png(
     lines2, labels2 = ax2.get_legend_handles_labels()
 
     ax1.legend(
-        lines1 + lines2 ,
-        labels1 + labels2 ,
+        lines1 + lines2,
+        labels1 + labels2,
         loc="upper left",
         bbox_to_anchor=(1.02, 1.0),
         fontsize=6,
@@ -220,6 +218,7 @@ def save_trajectory_png(
     output_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_path, dpi=150, bbox_inches="tight")
     plt.close()
+
 
 def save_volume_area_trajectory_png(
     time_seconds: np.ndarray,
@@ -262,6 +261,7 @@ def save_volume_area_trajectory_png(
     plt.savefig(output_path, dpi=150, bbox_inches="tight")
     plt.close()
 
+
 def save_gas_density_trajectory_png(
     time_seconds: np.ndarray,
     gas_density: np.ndarray,
@@ -293,11 +293,12 @@ def save_gas_density_trajectory_png(
     plt.savefig(output_path, dpi=150, bbox_inches="tight")
     plt.close()
 
+
 def main():
     balloon = BalloonSystem(
         payload_mass=500.0,  # [kg]
         ground_volume=1578.0,  # [m^3]
-        max_volume=100000.0, # [m^3]
+        max_volume=100000.0,  # [m^3]
         gas_mass=230.0,  # [kg]
         drag_coefficient=0.47,  # (無次元) 球体では約0.47 (https://www.arc.id.au/CannonballDrag.html?utm_source=chatgpt.com)
     )
@@ -308,7 +309,7 @@ def main():
 
     # 伝播時間とタイムステップを定義
     time_step = timedelta(seconds=0.1)
-    save_state_interval=timedelta(seconds=10)  # 状態保存のインターバル（10秒ごと）
+    save_state_interval = timedelta(seconds=10)  # 状態保存のインターバル（10秒ごと）
     propagation_duration = timedelta(seconds=3000)
 
     # シミュレーションを実行して時刻と高度の配列を取得
@@ -320,7 +321,7 @@ def main():
             initial_velocity,
             time_step,
             save_state_interval,
-            propagation_duration
+            propagation_duration,
         )
     )
 

@@ -59,7 +59,9 @@ def propagate(
     current_time = epoch_time
     end_time = epoch_time + propagation_time
     time_step_seconds = time_step.total_seconds()  # タイムステップを秒に変換
-    save_interval_steps = int(save_state_interval.total_seconds() / time_step_seconds)  # 状態保存のインターバルをステップ数に変換
+    save_interval_steps = int(
+        save_state_interval.total_seconds() / time_step_seconds
+    )  # 状態保存のインターバルをステップ数に変換
 
     # propagationループ
     while current_time < end_time:
