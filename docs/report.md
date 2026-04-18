@@ -5,6 +5,8 @@ TODO ここに最終レポートを書く
 
 
 ## 2.Environment models(環境モデル)
+現在のシミュレーションで採用している環境モデルについて示す.
+
 ### 2.1 Isothermal Atmosphere model(等温大気モデル)
 大気密度の計算は等温大気モデルを採用しenvironment/atomosphere/isothermal_model.pyにて計算している.
 
@@ -33,7 +35,7 @@ TODO ここに最終レポートを書く
   - 270[K]一定(将来的にはここも線形補間とする) [issues](https://github.com/okuma-space/balloon-simulation/issues/18)
 
 
-採用しenvironment/atomosphere/layered_temperature_model.pyにて計算している.
+数値計算はenvironment/atomosphere/layered_temperature_model.pyにて計算している.
 
 1976 US Standard Atmosphere Table と比較し,誤差2.5%以内であることを確認している.
 
@@ -45,7 +47,7 @@ TODO ここに最終レポートを書く
 #### Interactive Figures
 [graph](https://okuma-space.github.io/balloon-simulation/html/layered_temperature.html)
 
-## 3.気球上昇運動シミュレーション過去versionの検証ログ
+## 3.気球上昇運動シミュレーション過去versionの検証ログ(保存/振り返り用)
 ### version0.3
 version0.3として気球の体積変化を追加しシミュレートした.
 パラメタとして地表面での体積,ガス質量を基に外気圧とガス圧から体積を変動させた.
@@ -127,7 +129,7 @@ ___
 初期versionとして気球内部の気体密度と外部の大気密度差から発生する浮力のみ考慮
 
 抗力が発生しないので速度の減衰が発生せずに振動をしている.
-- 気体密度 0.178 kg/m^3 (ヘリウム) [ref] (https://daitoh-mg.jp/1990/01/-helium.html?utm_source=chatgpt.com)
+- 気体密度 0.178 kg/m^3 (ヘリウム) [ref](https://daitoh-mg.jp/1990/01/-helium.html?utm_source=chatgpt.com)
 - 体積 1.0 m^3
 
 [PR](https://github.com/okuma-space/balloon-simulation/pull/8)
