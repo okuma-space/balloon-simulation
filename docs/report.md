@@ -37,12 +37,13 @@ version0.3として気球の体積変化をシミュレートした
 グラフには考察のため体積,断面積,ガス密度の推移も追加した.
 
 [PR](https://github.com/okuma-space/balloon-simulation/pull/12)
-### 静的表示
+
+### Figures
 ![pos_vel](https://okuma-space.github.io/balloon-simulation/png/balloon_posvel_trajectory_0.3.png)
 ![volume_area](https://okuma-space.github.io/balloon-simulation/png/balloon_volume_area_trajectory_0.3.png)
-![gas_density](https://okuma-space.github.io/balloon-simulation/png/balloon_gas_density_trajectory_0.3)
+![gas_density](https://okuma-space.github.io/balloon-simulation/png/balloon_gas_density_trajectory_0.3.png)
 
-### インタラクティブ表示
+### Interactive Figures
 [pos_vel](https://okuma-space.github.io/balloon-simulation/html/balloon_posvel_trajectory_0.3.html)
 
 [volume_area](https://okuma-space.github.io/balloon-simulation/html/balloon_volume_area_trajectory_0.3.html)
