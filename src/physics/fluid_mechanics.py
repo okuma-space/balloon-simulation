@@ -68,3 +68,10 @@ def drag_force(
         * relative_velocity
         * relative_velocity_norm
     )
+
+
+def calculate_density(mass: float, volume: float) -> float:
+    """密度[kg/m^3]を計算する関数"""
+
+    # 密度[kg/m^3] = 質量[kg] / 体積[m^3]
+    return mass / volume
