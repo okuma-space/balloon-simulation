@@ -4,9 +4,9 @@
 TODO ここに最終レポートを書く
 
 
-## 2.Environment models
-### Isothermal Atmosphere model(等温大気モデル)
-大気密度の計算は等温大気モデルを採用しisothermal_Model.pyにて計算している.
+## 2.Environment models(環境モデル)
+### 2.1 Isothermal Atmosphere model(等温大気モデル)
+大気密度の計算は等温大気モデルを採用しenvironment/atomosphere/isothermal_model.pyにて計算している.
 
 1976 US Standard Atmosphere Table と比較し,誤差10%以内であることを確認している.
 
@@ -18,7 +18,32 @@ TODO ここに最終レポートを書く
 #### Interactive Figures
 [graph](https://okuma-space.github.io/balloon-simulation/html/isothermal_density.html)
 
+### 2.1 Layered Temperature Model(分層大気温度モデル)
+大気温度の計算は1976 US Standard Atmosphere Tableをベースに以下のように分層化した.
 
+- 1層(0~12[km])
+  - 288.1[K]から216.6[K]までの線形補間
+- 2層(12~20[km])
+  - 216.6[K]一定
+- 3層(20~35[km])
+  - 216.6[K]から235[K]までの線形補間
+- 4層(35~50[km])
+  - 235[K]から270[K]までの線形補間
+- 5層 (>50 km)
+  - 270[K]一定(将来的にはここも線形補間とする)
+
+
+採用しenvironment/atomosphere/layered_temperature_model.pyにて計算している.
+
+1976 US Standard Atmosphere Table と比較し,誤差2.5%以内であることを確認している.
+
+#### Figures
+分層大気温度モデルにおける高度と温度の関係を以下示す.
+
+![temperature](https://okuma-space.github.io/balloon-simulation/png/layered_temperature.png)
+
+#### Interactive Figures
+[graph](https://okuma-space.github.io/balloon-simulation/html/layered_temperature.html)
 
 ## 3.気球上昇運動シミュレーション過去versionの検証ログ
 ### version0.3
