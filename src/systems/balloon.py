@@ -4,12 +4,12 @@ import numpy as np
 class Balloon:
     def __init__(
         self,
-        mass: float,  # 質量[kg]
+        payload_mass: float,  # 質量[kg]
         volume: float,  # 体積[m^3]
         gas_density: float,  # ガスの気体密度[kg/m^3]
         drag_coefficient: float,  # CD値/抗力係数 (無次元) 球体では約0.47(ref:https://www.arc.id.au/CannonballDrag.html?utm_source=chatgpt.com)
     ):
-        self.mass = mass
+        self.payload_mass = payload_mass
         self.volume = volume
         self.gas_density = gas_density
         self.drag_coefficient = drag_coefficient
@@ -25,3 +25,14 @@ class Balloon:
         # 断面積[m^2]を計算して返す
         # πr^2
         return np.pi * r**2
+
+    @property
+    def mass(self) -> float:
+        """質量[kg]を計算するプロパティ"""
+
+        # ガスの質量[kg] = ガス密度[kg/m^3] × 体積[m^3]
+        gas_mass = self.gas_density * self.volume
+
+        # 合計質量[kg] = 荷重質量[kg] + ガス質量[kg]
+        return self.payload_mass + gas_mass
+        # return 1.0

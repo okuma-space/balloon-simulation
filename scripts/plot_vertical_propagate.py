@@ -134,9 +134,9 @@ def save_trajectory_png(
 def main():
     # 気球の初期条件を定義
     balloon = Balloon(
-        mass=1.0,  # [kg]
-        gas_density=0.178,  # [kg/m^3] (ヘリウムの密度)　(https://daitoh-mg.jp/1990/01/-helium.html?utm_source=chatgpt.com)
-        volume=1.0,  # [m^3]
+        payload_mass=500.0,  # [kg]
+        gas_density=0.0023 ,  # [kg/m^3] (ヘリウムの密度)　(https://daitoh-mg.jp/1990/01/-helium.html?utm_source=chatgpt.com)
+        volume=100000.0,  # [m^3]
         drag_coefficient=0.47,  # (無次元) 球体では約0.47 (https://www.arc.id.au/CannonballDrag.html?utm_source=chatgpt.com)
     )
 
@@ -146,7 +146,7 @@ def main():
     initial_velocity = np.array([0.0, 0.0, 0.0])
 
     # 伝播時間とタイムステップを定義
-    time_step = timedelta(seconds=1)
+    time_step = timedelta(seconds=0.01)
     propagation_duration = timedelta(seconds=2000)
 
     # シミュレーションを実行して時刻と高度の配列を取得

@@ -123,6 +123,7 @@ def calculate_vertical_acceleration(
     net_force = (
         buoyant_force + drag_force - balloon.mass * phys_const.GRAVITY_ACCELERATION
     )
+    # print(f"Altitude: {altitude:.2f} m, Air Density: {air_density:.4f} kg/m^3, Buoyant Force: {buoyant_force:.2f} N, Drag Force: {drag_force:.2f} N, Net Force: {net_force:.2f} N")
 
     # 加速度[m/s^2]を計算
     # ネットフォース[N] / 質量[kg] = 加速度[m/s^2]
