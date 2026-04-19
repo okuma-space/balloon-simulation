@@ -44,9 +44,9 @@ Interactive Figures
 
 [gas_state](https://okuma-space.github.io/balloon-simulation/html/balloon_gas_state_history_0.5.html)
 
-序盤の上昇フェーズで2500 [sec]までガス密度が低下し,下降フェーズで12500 [sec]辺りから再び上昇していることが確認できる.
+序盤の上昇フェーズで約2500 [sec]までガス密度が低下し,下降フェーズで約12500 [sec]から再び上昇していることが確認できる.
 
-ガスの質量についても初期値として230 [kg]であったものが6000 [sec]辺りから放出が始まり,段階的に90 [kg]近辺まで下降していることが確認できる.
+ガスの質量についても初期値として230 [kg]であったものが約6000 [sec]辺りから放出が始まり,段階的に約90 [kg]近傍まで下降していることが確認できる.
 
 以下は気球と表面積についてのグラフである.
 
@@ -56,9 +56,9 @@ Interactive Figures
 
 [volume_area](https://okuma-space.github.io/balloon-simulation/html/balloon_volume_area_history_0.6.html)
 
-後述するように気球には最大体積を設定しているため,高度が上昇するにつれ2500 [sec]までは膨張しつつもその後一定値でとどまっていることが確認できる.
+後述するように気球には最大体積を設定しているため,高度が上昇するにつれ約2500 [sec]までは膨張しつつもその後一定値でとどまっていることが確認できる.
 
-その後ガスの放出が始まり11500 [sec]辺りから現象を開始している.
+その後ガスの放出が始まり約11500 [sec]近傍から減少を開始している.
 
 以下は気球のガス温度のグラフとなる.
 
@@ -239,7 +239,9 @@ https://wiki.sustainabletechnologies.ca/wiki/Flow_through_an_orifice
 
 数値計算はenvironment/atomosphere/layered_temperature_model.pyにて計算している.
 
-1976 US Standard Atmosphere Table と密度値を比較し，相対誤差が概ね10 [%]以内であることを確認している.
+1976 US Standard Atmosphere Table と温度値を比較し，相対誤差が概ね2.5 [%]以内であることを確認している.
+
+https://www.pdas.com/atmosTable1SI.html
 
 #### Figures
 分層大気温度モデルにおける高度と温度の関係を以下示す.
