@@ -1,9 +1,74 @@
 
 # シミュレーション自習結果サマリ
-## 1.気球上昇運動シミュレーション
-TODO ここに最終レポートを書く
-主要な処理も書く
+## 1.気球上昇下降運動シミュレーション
+pythonにて簡易的な気球の上昇下降シミュレーションを実装した.
 
+気球のパラメタ及び計算条件はconfig.jsonにて定義しており,シミュレーション実行結果となる高度/速度グラフは以下となる.
+
+横軸は離陸からの秒数を示している.
+
+![pos_vel](https://okuma-space.github.io/balloon-simulation/png/balloon_posvel_trajectory_0.6.png)
+
+Interactive Figures
+
+[pos_vel](https://okuma-space.github.io/balloon-simulation/html/balloon_posvel_trajectory_0.5.html)
+
+運用シナリオとしては,離陸して最高地点到達後に10分毎に断続的にガスを放出する想定で以下の制御スケジュールを想定した.
+- 2026-01-01T00:00:00Z 離陸
+- 2026-01-01T01:40:00Z ガスの放出開始
+- 2026-01-01T01:50:00Z ガスの放出終了
+- 2026-01-01T02:00:00Z ガスの放出開始
+- 2026-01-01T02:10:00Z ガスの放出終了
+- 2026-01-01T02:20:00Z ガスの放出開始
+- 2026-01-01T02:30:00Z ガスの放出終了
+- 2026-01-01T02:40:00Z ガスの放出開始
+- 2026-01-01T02:50:00Z ガスの放出終了
+- 2026-01-01T03:00:00Z ガスの放出開始
+- 2026-01-01T03:10:00Z ガスの放出終了
+- 2026-01-01T03:20:00Z ガスの放出開始
+- 2026-01-01T03:28:00Z ガスの放出終了
+
+最後の放出は着陸速度を緩めるために8分間だけを想定した.
+
+結果として気球は2500[sec]程で最高高度として42 [km]近辺に到達し,その後定常浮遊をした後に11500[sec]辺りから下降を開始し,15500[sec]頃に地上へと帰還している.
+
+速度ベクトルとしても想定通り最高到達点で収束安定し,その後11500[sec]辺りからマイナスへと転じ,最終的に0に終端した事が確認できる.
+
+以下はガスのグラフとなる.
+
+![gas_state](https://okuma-space.github.io/balloon-simulation/png/balloon_gas_state_history_0.6.png)
+
+Interactive Figures
+
+[gas_state](https://okuma-space.github.io/balloon-simulation/html/balloon_gas_state_history_0.5.html)
+
+序盤の上昇フェーズで2500[sec]までガス密度が低下し,下降フェーズで12500[sec]辺りから再び上昇していることが確認できる.
+
+ガスの質量についても初期値として230[kg]であったものが6000[sec]辺りから放出が始まり,段階的に90[kg]近辺まで下降していることが確認できる.
+
+以下は気球と表面積についてのグラフである.
+
+![volume_area](https://okuma-space.github.io/balloon-simulation/png/balloon_volume_area_history_0.6.png)
+
+Interactive Figures
+
+[volume_area](https://okuma-space.github.io/balloon-simulation/html/balloon_volume_area_trajectory_0.5.html)
+
+後述するように気球には最大体積を設定しているため,高度が上昇するにつれ2500[sec]までは膨張しつつもその後一定値でとどまっていることが確認できる.
+
+その後ガスの放出が始まり11500[sec]辺りから現象を開始している.
+
+以下は気球のガス温度のグラフとなる.
+
+![temperature](https://okuma-space.github.io/balloon-simulation/png/balloon_temperature_history_0.6.png)
+
+Interactive Figures
+
+[temperature](https://okuma-space.github.io/balloon-simulation/html/balloon_temperature_history_0.5.html)
+
+なめらかではあるが5.2で後述する分層大気モデルを時間遅れで追従していることが確認できる.
+
+総じて上昇フェーズ,定常浮遊フェーズ,下降フェーズのおおよその挙動がシミュレートできたことがわかった.
 
 ## 2 ダイナミクスモデル
 現在は鉛直方向のみの1自由度ダイナミクスを対象とし，以下の力学モデルを考慮している．
@@ -50,7 +115,8 @@ a = F_net / m
 - 時刻 [UTC]
 - 位置 [m]
 - 速度 [m/s]
-- 体積 [m^3]
+- 気球体積 [m^3]
+- 気球最大体積 [m^3]
 - ガス温度 [K]
 - ガス質量 [kg]
 - 揚力ガスの種類 (ヘリウム or 水素)
@@ -62,7 +128,7 @@ a = F_net / m
 - 排気弁の流量係数 約 0.61
 
 ### 3.1 体積/面積モデル
-気球の形状は常に真球と仮定しており,体積は理想気体の状態方程式より以下で計算をしている.
+気球の形状は常に真球と仮定しており,体積は理想気体の状態方程式より以下の簡易モデルで計算をしている.
 
 PV = mR_sT
 
@@ -72,6 +138,8 @@ V = mR_sT/P
 
 外部圧力は5.1の等温大気モデルを用いて算出しており,体積の計算では内部圧力=外部圧力と近似して計算している.
 
+なお気球には最大体積を設定しており,ある一定以上の体積にはならないように計算している.これは気球が破裂して際限なく体積が上昇するのではなく,膜によって留められていることをシミュレートしている.
+
 抗力計算に用いる断面積は球体の断面積として以下の計算で半径rを算出している.
 
 V = (4/3) * π * r^3  =>  r = (3V / (4π))^(1/3)
@@ -80,10 +148,16 @@ V = (4/3) * π * r^3  =>  r = (3V / (4π))^(1/3)
 
 なおペイロードも断面積を保持しており,現在は簡易モデルとして有効断面積を max(気球断面積, ペイロード断面積) で近似して抗力計算に用いている.
 
-### 3.2 温度モデル
-大気温度は5.2の分層大気温度モデルを用いており、常時外気温=気球内部気温として近似している.
+### 3.2 熱モデル
+大気温度は 5.2 の分層大気温度モデルを用いており,内部温度は以下の簡易モデルで更新している.
 
-熱遅れ・日射・放射冷却などを無視している.
+T_in,new = T_in,old + (T_out - T_in,old) / 1000
+
+ここでT_in,old は更新前の内部温度,T_in,new は更新後の内部温度,T_out は外部温度を示す.
+
+本モデルでは,内部温度が外部温度に対して緩やかに追従する一次遅れ近似として扱っている.
+
+熱遅れの詳細,日射,放射冷却などは考慮していない.
 
 ### 3.3 内部圧力モデル
 内部圧力は理想気体の状態方程式を用いて以下で計算をしている.
@@ -178,6 +252,33 @@ README/mnにて記載.
 
 ## Appendix.過去versionの検証ログ(保存/振り返り用)
 ### version0.5
+version0.6として温度モデルを改善した.
+
+挙動に大きな違いはないが,温度グラフがより緩やかに分層大気モデルを追従するようになったことが確認できる.
+
+また温度変化が緩やかになったため,気球モデルの数値次第で着陸後にある程度時間が経つとガスが温まり再浮遊するケースも散見された.
+
+[Repository](https://github.com/okuma-space/balloon-simulation/tree/v0.6)
+
+[PR](https://github.com/okuma-space/balloon-simulation/pull/27)
+
+#### Figures
+![pos_vel](https://okuma-space.github.io/balloon-simulation/png/balloon_posvel_trajectory_0.6.png)
+![volume_area](https://okuma-space.github.io/balloon-simulation/png/balloon_volume_area_history_0.6.png)
+![gas_state](https://okuma-space.github.io/balloon-simulation/png/balloon_gas_state_history_0.6.png)
+![temperature](https://okuma-space.github.io/balloon-simulation/png/balloon_temperature_history_0.6.png)
+
+#### Interactive Figures
+[pos_vel](https://okuma-space.github.io/balloon-simulation/html/balloon_posvel_trajectory_0.6.html)
+
+[volume_area](https://okuma-space.github.io/balloon-simulation/html/balloon_volume_area_trajectory_0.6.html)
+
+[gas_state](https://okuma-space.github.io/balloon-simulation/html/balloon_gas_state_history_0.6.html)
+
+[temperature](https://okuma-space.github.io/balloon-simulation/html/balloon_temperature_history_0.6.html)
+
+
+### version0.5
 version0.5としてガスの放出による下降制御を導入した.
 
 導入にあたって熱モデルが必要だったので簡易的に外気温と同一と見なした.
@@ -192,7 +293,7 @@ version0.5としてガスの放出による下降制御を導入した.
 
 [Repository](https://github.com/okuma-space/balloon-simulation/tree/v0.5)
 
-[PR](https://github.com/okuma-space/balloon-simulation/pull/23)
+[PR](https://github.com/okuma-space/balloon-simulation/pull/26)
 
 #### Figures
 ![pos_vel](https://okuma-space.github.io/balloon-simulation/png/balloon_posvel_trajectory_0.5.png)

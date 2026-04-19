@@ -19,7 +19,7 @@ def propagate_trajectory(
     time_step_seconds,
 ):
     """
-    ルンゲクッタ法を用いて、気球の位置と速度を更新する関数.
+    ルンゲクッタ法を用いて,気球の位置と速度を更新する関数.
     Parameters
     ----------
     balloon : BalloonSystem
@@ -156,7 +156,7 @@ def calculate_vertical_acceleration(
     Parameters
     ----------
     balloon : BalloonSystem
-        気球オブジェクト。
+        気球オブジェクト.
     position_vector : np.ndarray
         位置ベクトル [x, y, z] [m]
     velocity_vector : np.ndarray

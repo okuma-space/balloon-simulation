@@ -8,13 +8,22 @@ A learning project for balloon engineering simulation
 作業ログのためにPRは作っているが,コードレビューは主にローカル環境で自主的に実施している．
 
 # 結果サマリ
+
+気球の上昇下降運動シミュレーションを実施した.
+実行結果の位置速度推移のグラフは以下となる.
+[pos_vel](https://okuma-space.github.io/balloon-simulation/png/balloon_posvel_trajectory_0.6.html)
+
+想定通り気球は上昇し,定常浮遊状態に移行したのちに,スケジュールされたガス排出によって下降してきていることが確認できた.
+
+サマリは以下にまとめた.
+
 [結果サマリ](https://okuma-space.github.io/balloon-simulation/report.html)
 
 # シミュレーション実行手順
 ## 上下運動ダイナミクスシミュレーション
 気球モデルの初期値および計算条件は `config.json` に定義している．
 
-実行は以下のコマンド.
+実行は以下のコマンドからできる.
 ```bash
 python scripts/plot_vertical_propagate.py 
 ```

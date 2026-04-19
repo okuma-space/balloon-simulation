@@ -16,35 +16,53 @@ def propagate_state(
     volume_list: np.ndarray,
     cross_sectional_area_list: np.ndarray,
     gas_density_list: np.ndarray,
-    gas_temperature_listt: np.ndarray,
+    gas_temperature_list: np.ndarray,
     time_step_seconds: float,
-) -> tuple[float, float, float, float]:
+) -> tuple[float, float, float, float, float]:
     """
-    気球の状態を更新する関数.
-    ここでは、体積、断面積、ガス密度を更新することを想定している.
+    気球状態を1ステップ進めて物理量を更新する.
+
+    現在時刻と位置,高度に基づき外気温度と外気圧を計算し,
+    ガス質量の変化、体積・断面積・ガス密度・
+    ガス温度の更新を行う.
+
+    またガスの排出スケジュールに従ったガス排出も実施する.
+
     Parameters
     ----------
     balloon : BalloonSystem
         気球オブジェクト
+    current_time : datetime
+        現在時刻
     position_vector : np.ndarray
         位置ベクトル [x, y, z] [m]
     velocity_vector : np.ndarray
         速度ベクトル [vx, vy, vz] [m/s]
-    volume : float
-        気球の体積 [m^3]
-    cross_sectional_area : float
-        気球の断面積 [m^2]
-    gas_density : float
-        気球内のガス密度 [kg/m^3]
+    gas_mass_list : np.ndarray
+        直前のガス質量履歴 [kg]
+    volume_list : np.ndarray
+        直前の体積履歴 [m^3]
+    cross_sectional_area_list : np.ndarray
+        直前の断面積履歴 [m^2]
+    gas_density_list : np.ndarray
+        直前のガス密度履歴 [kg/m^3]
+    gas_temperature_list : np.ndarray
+        直前のガス温度履歴 [K]
+    time_step_seconds : float
+        計算タイムステップ [s]
 
     Returns
     -------
-    tuple[float, float, float]
-        更新された体積、断面積、ガス密度のタプル (volume, cross_sectional_area, gas_density)
+    tuple[float, float, float, float, float]
+        更新後の状態を表すタプル
+        (gas_mass, volume, cross_sectional_area, gas_density, gas_temperature)
     """
     # 温度[K]の更新(外気温と同一とする)
     altitude = position_vector[2]  # 高度[m]
-    gas_temperature = layered_temperature_model.calculate_temperature(altitude)
+    out_temperature = layered_temperature_model.calculate_temperature(altitude) # 外気温[K]
+    gas_temperature = balloon_mechanics.calculate_temperature(
+        out_temperature, gas_temperature_list[-1]
+    )
 
     # 大気圧
     out_pressure = isothermal_model.calculate_pressure(
