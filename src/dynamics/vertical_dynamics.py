@@ -228,7 +228,8 @@ def calculate_trajectory_derivative(
     """
     # 現在の時刻を計算.
     # 絶対時刻にルンゲクッタ計算内部での相対時刻を加算する.
-    absolute_time = current_time + timedelta(seconds=relative_time)
+    # 将来実装のため現時点ではruffを無効化する
+    absolute_time = current_time + timedelta(seconds=relative_time) # noqa: F841
 
     # 状態ベクトルから位置と速度を抽出
     position = state_vector[0:3]
