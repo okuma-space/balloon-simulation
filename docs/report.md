@@ -32,6 +32,8 @@ v_rel は流体に対する相対速度ベクトル [m/s] である．
 
 （気球工学 P.53 (2.62)）
 
+なお抗力計算には3.1で示しす体積/断面積モデルを用いる.
+
 ### 2.3 合力モデルと鉛直方向加速度
 鉛直方向の合力 F_net は
 
@@ -51,23 +53,81 @@ a = F_net / m
 - 体積 [m^3]
 - ガス温度 [K]
 - ガス質量 [kg]
+- 揚力ガスの種類 (ヘリウム or 水素)
 - ペイロード質量 [kg]
+- ペイロード断面積 [m^2]
+- ペイロード抗力係数 Cd [-]（ペイロードは立方体近似として約 1.1）
+- 気球抗力係数 Cd [-]（気球は球体近似として約 0.47）
+- 排気弁の総開口部面積[m^2]
+- 排気弁の流量係数 約 0.61
 
-### 3.1 体積モデル
-体積は高度の関数として一意に決まると仮定し理想気体かつ温度一定の近似のもとで，以下の関係を用いる
+### 3.1 体積/面積モデル
+気球の形状は常に真球と仮定しており,体積は理想気体の状態方程式より以下で計算をしている.
 
-V(h) = V_0 * ρ_0 / ρ(h)
+PV = mR_sT
 
-ここでV_0 は地表面における体積 [m^3]，ρ_0 は地表面の大気密度, ρ(h) は高度 h における大気密度である．
+V = mR_sT/P
+
+ここで P は外部圧力 [Pa], m はガス質量 [kg], R_s は比気体定数 [J/(kg·K)], T は温度 [K]である.
+
+外部圧力は5.1の等温大気モデルを用いて算出しており,体積の計算では内部圧力=外部圧力と近似して計算している.
+
+抗力計算に用いる断面積は球体の断面積として以下の計算で半径rを算出している.
+
+V = (4/3) * π * r^3  =>  r = (3V / (4π))^(1/3)
+
+ここで算出された半径で円近似として断面積を計算している.
+
+なおペイロードも断面積を保持しており,現在は簡易モデルとして有効断面積を max(気球断面積, ペイロード断面積) で近似して抗力計算に用いている.
 
 ### 3.2 温度モデル
-TBD
+大気温度は5.2の分層大気温度モデルを用いており、常時外気温=気球内部気温として近似している.
+
+熱遅れ・日射・放射冷却などを無視している.
+
+### 3.3 内部圧力モデル
+内部圧力は理想気体の状態方程式を用いて以下で計算をしている.
+
+P = mRsT / V
+
+ここで P は内部圧力 [Pa], m はガス質量 [kg], Rs は比気体定数 [J/(kg·K)], T は温度 [K] であり, V は体積モデルで計算された値を用いる.
+
+現在は内部圧力は体積計算には用いておらず,4.1の下降制御時の内外圧力差計算にのみ用いている.
+
+## 4 制御モデル
+### 4.1 下降制御
+現在簡易的に排気弁からのガス排出による下降制御をシミュレートしている．
+
+排気による浮揚ガスの体積流量 Q [m³/s] は以下で近似する（ref. 気球工学 P56 式 (2.79)）
+
+Q = Cd · A · √(2 ΔP / ρ)
+
+ここで，
+
+- Cd : 流量係数 [-]  
+- A  : 排気弁開口面積 [m²]  
+- ρ  : 内部ガス密度 [kg/m³]  
+- ΔP : 排気弁開口部における内外圧力差 [Pa]  
+
+また，質量流量 ṁ [kg/s] は以下で求める：
+
+ṁ = ρ Q
+
+なお流量係数 Cd は鋭いエッジを持つオリフィス流れの代表値として 0.61 を使用する．  
+https://wiki.sustainabletechnologies.ca/wiki/Flow_through_an_orifice
+
+現在排気はスケジュール式により制御しており，configファイルにて排気イベント（開始時刻・終了時刻の組）のリストを定義している．
 
 
-## 4 Environment models(環境モデル)
+
+
+
+
+
+## 5 Environment models(環境モデル)
 現在のシミュレーションで採用している環境モデルについて示す.
 
-### 4.1 Isothermal Atmosphere model(等温大気モデル)
+### 5.1 Isothermal Atmosphere model(等温大気モデル)
 大気密度の計算は等温大気モデルを採用しenvironment/atomosphere/isothermal_model.pyにて計算している.
 
 1976 US Standard Atmosphere Table と比較し,誤差10 [%]以内であることを確認している.
@@ -80,7 +140,7 @@ TBD
 #### Interactive Figures
 [graph](https://okuma-space.github.io/balloon-simulation/html/isothermal_density.html)
 
-### 4.2 Layered Temperature Model(分層大気温度モデル)
+### 5.2 Layered Temperature Model(分層大気温度モデル)
 大気温度の計算は1976 US Standard Atmosphere Tableをベースに以下のように分層化した.
 
 - 1層(0~12[km])
@@ -117,6 +177,39 @@ README/mnにて記載.
 
 
 ## Appendix.過去versionの検証ログ(保存/振り返り用)
+### version0.5
+version0.5としてガスの放出による下降制御を導入した.
+
+導入にあたって熱モデルが必要だったので簡易的に外気温と同一と見なした.
+
+同様に体積モデルを熱を考慮した理想気体の状態方程式に基づくモデルに変更した.
+
+下降制御は完全放出すると垂直落下したため,まずは開始終了時刻の配列を与えるスケジュール式として,地表面に帰還するシナリオを組んだ.
+
+想定通りに緩やかな帰還が実現できている.
+
+また温度,体積,なども上昇フェーズと下降フェーズで想定通りの挙動を示している.
+
+[Repository](https://github.com/okuma-space/balloon-simulation/tree/v0.5)
+
+[PR](https://github.com/okuma-space/balloon-simulation/pull/23)
+
+#### Figures
+![pos_vel](https://okuma-space.github.io/balloon-simulation/png/balloon_posvel_trajectory_0.5.png)
+![volume_area](https://okuma-space.github.io/balloon-simulation/png/balloon_volume_area_history_0.5.png)
+![gas_state](https://okuma-space.github.io/balloon-simulation/png/balloon_gas_state_history_0.5.png)
+![temperature](https://okuma-space.github.io/balloon-simulation/png/balloon_temperature_history_0.5.png)
+
+#### Interactive Figures
+[pos_vel](https://okuma-space.github.io/balloon-simulation/html/balloon_posvel_trajectory_0.5.html)
+
+[volume_area](https://okuma-space.github.io/balloon-simulation/html/balloon_volume_area_trajectory_0.5.html)
+
+[gas_state](https://okuma-space.github.io/balloon-simulation/html/balloon_gas_state_history_0.5.html)
+
+[temperature](https://okuma-space.github.io/balloon-simulation/html/balloon_temperature_history_0.5.html)
+
+
 ### version0.4
 version0.4として数値積分の方法をオイラー法から4次のRunge-Kutta方へと変更した.
 
