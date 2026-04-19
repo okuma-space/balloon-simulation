@@ -5,6 +5,7 @@ import matplotlib.pyplot as plt
 from datetime import datetime, timedelta
 from systems.balloon_system import BalloonSystem
 import dynamics.vertical_dynamics as vertical_dynamics
+import json
 
 OUTPUT_DIR = Path("docs")
 
@@ -100,7 +101,7 @@ def save_position_trajectory_html(
     fig.write_html(str(output_path), include_plotlyjs="cdn")
 
 
-def save_volume_area_trajectory_html(
+def save_volume_area_history_html(
     time_seconds: np.ndarray,
     volume: np.ndarray,
     area: np.ndarray,
@@ -132,7 +133,7 @@ def save_volume_area_trajectory_html(
     )
 
     fig.update_layout(
-        title="Balloon Volume and Area Trajectory",
+        title="Balloon Volume and Area History",
         xaxis=dict(title="Time [s]"),
         yaxis=dict(title="Volume [m^3]", side="left"),
         yaxis2=dict(
@@ -147,7 +148,7 @@ def save_volume_area_trajectory_html(
     fig.write_html(str(output_path), include_plotlyjs="cdn")
 
 
-def save_gas_density_trajectory_html(
+def save_gas_density_history_html(
     time_seconds: np.ndarray,
     gas_density: np.ndarray,
     output_path: Path,
@@ -165,7 +166,7 @@ def save_gas_density_trajectory_html(
     )
 
     fig.update_layout(
-        title="Balloon Gas Density Trajectory",
+        title="Balloon Gas Density History",
         xaxis=dict(title="Time [s]"),
         yaxis=dict(title="Gas Density [kg/m^3]"),
         legend=dict(x=0.01, y=0.99),
@@ -220,7 +221,7 @@ def save_trajectory_png(
     plt.close()
 
 
-def save_volume_area_trajectory_png(
+def save_volume_area_history_png(
     time_seconds: np.ndarray,
     volume: np.ndarray,
     area: np.ndarray,
@@ -255,14 +256,14 @@ def save_volume_area_trajectory_png(
         borderpad=0.2,
     )
 
-    plt.title("Balloon Volume and Area Trajectory")
+    plt.title("Balloon Volume and Area History")
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_path, dpi=150, bbox_inches="tight")
     plt.close()
 
 
-def save_gas_density_trajectory_png(
+def save_gas_density_history_png(
     time_seconds: np.ndarray,
     gas_density: np.ndarray,
     output_path: Path,
@@ -287,75 +288,89 @@ def save_gas_density_trajectory_png(
         borderpad=0.2,
     )
 
-    plt.title("Balloon Gas Density Trajectory")
+    plt.title("Balloon Gas Density History")
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     plt.savefig(output_path, dpi=150, bbox_inches="tight")
     plt.close()
 
 
+def load_config(path: str) -> dict:
+    with open(path, "r") as f:
+        return json.load(f)
+
+
 def main():
-    balloon = BalloonSystem(
-        payload_mass=500.0,  # [kg]
-        ground_volume=1578.0,  # [m^3]
-        max_volume=100000.0,  # [m^3]
-        gas_mass=230.0,  # [kg]
-        drag_coefficient=0.47,  # (無次元) 球体では約0.47 (https://www.arc.id.au/CannonballDrag.html?utm_source=chatgpt.com)
-    )
-    # 初期位置と速度を定義
-    epoch = datetime(2026, 1, 1, 0, 0, 0)
-    initial_position = np.array([0.0, 0.0, 0.0])
-    initial_velocity = np.array([0.0, 0.0, 0.0])
+    config = load_config("config.json")
 
-    # 伝播時間とタイムステップを定義
-    time_step = timedelta(seconds=0.1)
-    save_state_interval = timedelta(seconds=10)  # 状態保存のインターバル（10秒ごと）
-    propagation_duration = timedelta(seconds=3000)
+    # configからBalloonSystemオブジェクトを作成
+    balloon_cfg = config["balloon"]
+    balloon = BalloonSystem(**balloon_cfg)
 
-    # シミュレーションを実行して時刻と高度の配列を取得
-    time_seconds, altitude, vertical_velocity, volume, gas_density, area = (
-        simulate_balloon_trajectory(
-            balloon,
-            epoch,
-            initial_position,
-            initial_velocity,
-            time_step,
-            save_state_interval,
-            propagation_duration,
-        )
+    # trajectoryの初期条件をconfigから読み込む
+    traj_cfg = config["trajectory"]
+
+    epoch = datetime.fromisoformat(traj_cfg["epoch"].replace("Z", "+00:00"))
+
+    initial_position = np.array(traj_cfg["initial_position"], dtype=float)
+    initial_velocity = np.array(traj_cfg["initial_velocity"], dtype=float)
+
+    # 計算条件をconfigから読み込む
+    calc_cfg = config["calculate"]
+
+    time_step = timedelta(seconds=calc_cfg["time_step_seconds"])
+    save_state_interval = timedelta(seconds=calc_cfg["save_state_interval_seconds"])
+    propagation_duration = timedelta(seconds=calc_cfg["propagation_duration_seconds"])
+
+    # simulation
+    (
+        time_seconds,
+        altitude,
+        vertical_velocity,
+        volume,
+        gas_density,
+        area,
+    ) = simulate_balloon_trajectory(
+        balloon,
+        epoch,
+        initial_position,
+        initial_velocity,
+        time_step,
+        save_state_interval,
+        propagation_duration,
     )
 
     # 出力ファイルのパスを定義
     html_path = OUTPUT_DIR / "html/balloon_posvel_trajectory.html"
     png_path = OUTPUT_DIR / "png/balloon_posvel_trajectory.png"
-    volume_area_html_path = OUTPUT_DIR / "html/balloon_volume_area_trajectory.html"
-    volume_area_png_path = OUTPUT_DIR / "png/balloon_volume_area_trajectory.png"
-    gas_density_html_path = OUTPUT_DIR / "html/balloon_gas_density_trajectory.html"
-    gas_density_png_path = OUTPUT_DIR / "png/balloon_gas_density_trajectory.png"
+    volume_area_html_path = OUTPUT_DIR / "html/balloon_volume_area_history.html"
+    volume_area_png_path = OUTPUT_DIR / "png/balloon_volume_area_history.png"
+    gas_density_html_path = OUTPUT_DIR / "html/balloon_gas_density_history.html"
+    gas_density_png_path = OUTPUT_DIR / "png/balloon_gas_density_history.png"
 
     # HTMLとPNGを保存
     save_position_trajectory_html(time_seconds, altitude, vertical_velocity, html_path)
     save_trajectory_png(time_seconds, altitude, vertical_velocity, png_path)
 
-    save_volume_area_trajectory_html(
+    save_volume_area_history_html(
         time_seconds,
         volume,
         area,
         volume_area_html_path,
     )
-    save_volume_area_trajectory_png(
+    save_volume_area_history_png(
         time_seconds,
         volume,
         area,
         volume_area_png_path,
     )
 
-    save_gas_density_trajectory_html(
+    save_gas_density_history_html(
         time_seconds,
         gas_density,
         gas_density_html_path,
     )
-    save_gas_density_trajectory_png(
+    save_gas_density_history_png(
         time_seconds,
         gas_density,
         gas_density_png_path,
