@@ -14,6 +14,7 @@ Interactive Figures
 [pos_vel](https://okuma-space.github.io/balloon-simulation/html/balloon_posvel_trajectory_0.5.html)
 
 運用シナリオとしては,離陸して最高地点到達後に10分毎に断続的にガスを放出する想定で以下の制御スケジュールを想定した.
+
 - 2026-01-01T00:00:00Z 離陸
 - 2026-01-01T01:40:00Z ガスの放出開始
 - 2026-01-01T01:50:00Z ガスの放出終了
@@ -112,6 +113,7 @@ a = F_net / m
 
 ## 3 気球モデル
 気球の状態量として以下を考慮している.
+
 - 時刻 [UTC]
 - 位置 [m]
 - 速度 [m/s]
