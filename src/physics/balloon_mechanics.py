@@ -73,6 +73,7 @@ def calculate_volume_at_altitude(altitude: float, ground_volume: float) -> float
     )
 
     # 指定した高度での体積[m^3]の計算（ボイル則）
+    # 指定した高度での体積 [m^3] =地表面上での体積 [m^3] * 地表面上での大気密度[kg/m^3] / 指定した高度での大気密度[kg/m^3]
     volume_at_altitude = (
         ground_volume * air_pressure_at_ground / air_pressure_at_altitude
     )
