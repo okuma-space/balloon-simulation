@@ -1,0 +1,19 @@
+{
+  "balloon": {
+    "payload_mass": 500.0,
+    "ground_volume": 1578.0,
+    "max_volume": 100000.0,
+    "gas_mass": 230.0,
+    "drag_coefficient": 0.47
+  },
+  "trajectory": {
+  "epoch": "2026-01-01T00:00:00Z",
+  "initial_position": [0.0, 0.0, 0.0],
+  "initial_velocity": [0.0, 0.0, 0.0]
+  },
+  "calculate": {
+      "time_step_seconds": 0.1,
+      "save_state_interval_seconds": 10,
+      "propagation_duration_seconds": 3000
+  }
+}

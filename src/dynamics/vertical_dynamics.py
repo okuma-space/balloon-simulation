@@ -4,7 +4,7 @@ import numpy as np
 import physics.fluid_mechanics as fluid_mechanics
 import physics.balloon_mechanics as balloon_mechanics
 import phys_const
-from systems.balloon_state_trajectry import BalloonStateTrajectory
+from systems.balloon_state_history import BalloonStateHistory
 from datetime import datetime, timedelta
 
 
@@ -16,7 +16,7 @@ def propagate(
     time_step: timedelta,
     save_state_interval: timedelta,
     propagation_time: timedelta,
-) -> BalloonStateTrajectory:
+) -> BalloonStateHistory:
     """
     指定された propagation_time にわたって気球の鉛直ダイナミクスをシミュレートする
 
@@ -39,11 +39,11 @@ def propagate(
 
     Returns
     -------
-    BalloonStateTrajectory
-        気球のstateを記録したTrajectory オブジェクト
+    BalloonStateHistory
+        気球のstateを記録したHistory オブジェクト
     """
 
-    # balloon state trajectoryの初期化
+    # balloon state historyの初期化
     time_list = [epoch_time]
     position_vector_list = [initial_position.copy()]
     velocity_vector_list = [initial_velocity.copy()]
@@ -99,10 +99,11 @@ def propagate(
         # 時刻を保存
         current_time += time_step
 
-        # 更新された時刻と位置と速度を保存
+        # 更新されたtrajectoryを保存
         time_list.append(current_time)
         position_vector_list.append(position)
         velocity_vector_list.append(velocity)
+        # 更新されたstateを保存
         volume_list.append(current_time_volume)
         cross_sectional_area_list.append(current_time_cross_sectional_area)
         gas_density_list.append(current_time_gas_density)
@@ -116,8 +117,8 @@ def propagate(
         cross_sectional_area_list = cross_sectional_area_list[::save_interval_steps]
         gas_density_list = gas_density_list[::save_interval_steps]
 
-    # Trajectoryオブジェクトを作成して返す
-    return BalloonStateTrajectory(
+    # BalloonStateHistoryオブジェクトを作成して返す
+    return BalloonStateHistory(
         time_list,
         position_vector_list,
         velocity_vector_list,
