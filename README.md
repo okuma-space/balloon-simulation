@@ -7,8 +7,6 @@ A learning project for balloon engineering simulation
 
 作業ログのためにPRは作っているが,コードレビューは主にローカル環境で自主的に実施している．
 
-（AIツールも補助的に活用）
-
 # 結果サマリ
 [結果サマリ](https://okuma-space.github.io/balloon-simulation/report.html)
 

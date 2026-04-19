@@ -12,6 +12,8 @@ class BalloonStateHistory:
         # state
         volume_list: np.ndarray,  # 体積配列 [m^3], shape (N,)
         gas_density_list: np.ndarray,  # ガス密度配列 [kg/m^3], shape (N,)
+        gas_mass_list: np.ndarray,  # ガス質量配列 [kg], shape (N,)
+        gas_temperature_list: np.ndarray,  # ガス温度配列 [K], shape (N,)
         cross_sectional_area_list: np.ndarray,  # 断面積配列 [m^2], shape (N,)
     ):
         # trajectory
@@ -21,6 +23,8 @@ class BalloonStateHistory:
         # state
         self.volume_list = np.array(volume_list, dtype=float)
         self.gas_density_list = np.array(gas_density_list, dtype=float)
+        self.gas_mass_list = np.array(gas_mass_list, dtype=float)
+        self.gas_temperature_list = np.array(gas_temperature_list, dtype=float)
         self.cross_sectional_area_list = np.array(
             cross_sectional_area_list, dtype=float
         )

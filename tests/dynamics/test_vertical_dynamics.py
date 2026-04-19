@@ -31,8 +31,10 @@ def test_vertical_dynamics():
     )
 
     # 高度成分のみを抜き取る
-    balloon_state_history.position_vector_list[:, 2]  
+    balloon_state_history.position_vector_list[:, 2]
 
     # 最大高度が35000[m]近辺であることを検証する
     max_altitude = balloon_state_history.position_vector_list[:, 2].max()
-    assert abs(max_altitude - 35000.0) / 35000.0 <= REL_TOL, f"Maximum altitude {max_altitude} is not within {REL_TOL*100}% of 35000[m]"
+    assert abs(max_altitude - 35000.0) / 35000.0 <= REL_TOL, (
+        f"Maximum altitude {max_altitude} is not within {REL_TOL * 100}% of 35000[m]"
+    )
