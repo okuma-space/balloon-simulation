@@ -1,6 +1,7 @@
 from systems.balloon_system import BalloonSystem
 from dynamics import vertical_dynamics
 from datetime import datetime, timedelta
+from systems import gas
 
 # 許容誤差20[%]
 REL_TOL = 0.20
@@ -13,10 +14,17 @@ def test_vertical_dynamics():
     # 最高到達高度が35000[m]近辺であることを検証するための科学気球モデル
     balloon = BalloonSystem(
         payload_mass=500.0,
-        ground_volume=1578.0,
+        payload_area=1.0,
+        payload_drag_coefficient=1.1,
+        ground_volume=1387.0,
         max_volume=100000.0,
-        gas_mass=230.0,
-        drag_coefficient=0.47,
+        initial_gas_mass=230.0,
+        initial_gas_temperature=288.0,
+        balloon_drag_coefficient=0.47,
+        vent_area=0.071,
+        flow_coefficient=0.61,
+        gas_type=gas.LiftingGasType.HELIUM,
+        vent_schedule=[],
     )
 
     # シミュレーションの実行
