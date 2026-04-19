@@ -251,7 +251,7 @@ https://wiki.sustainabletechnologies.ca/wiki/Flow_through_an_orifice
 
 
 ## Appendix. 過去versionの検証ログ(保存/振り返り用)
-### version0.5
+### version0.6
 version0.6として温度モデルを改善した.
 
 挙動に大きな違いはないが,温度グラフがより緩やかに分層大気モデルを追従するようになったことが確認できる.
