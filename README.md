@@ -19,7 +19,7 @@ A learning project for balloon engineering simulation
 
 実行条件や実装されたダイナミクスについてのサマリは以下にまとめた.
 
-[結果サマリ](https://okuma-space.github.io/balloon-simulation/report.html)
+[結果サマリ](https://github.com/okuma-space/balloon-simulation/blob/main/docs/report.md)
 
 # シミュレーション実行手順
 ## 上下運動ダイナミクスシミュレーション
@@ -38,7 +38,7 @@ python scripts/plot_vertical_propagate.py
 # issues
 現時点での改善アイディアなどはissuesに記載.
 
-https://github.com/okuma-space/balloon-simulation/issues
+[GitHub Issues](https://github.com/okuma-space/balloon-simulation/issues)
 
 # ci/workflow
 以下の4ステージで構成.
