@@ -53,7 +53,7 @@ Interactive Figures
 
 Interactive Figures
 
-[volume_area](https://okuma-space.github.io/balloon-simulation/html/balloon_volume_area_trajectory_0.5.html)
+[volume_area](https://okuma-space.github.io/balloon-simulation/html/balloon_volume_area_history_0.6.html)
 
 後述するように気球には最大体積を設定しているため,高度が上昇するにつれ2500[sec]までは膨張しつつもその後一定値でとどまっていることが確認できる.
 
