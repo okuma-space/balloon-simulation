@@ -36,7 +36,7 @@ Interactive Figures
 シミュレーション結果より，気球は約2500 [sec]程で最高高度として約42 [km]近辺に到達した.その後しばらく定常浮遊し約11500 [sec]から下降を開始して，約15500 [sec]で地上へ到達した.
 鉛直速度も最高到達点付近で約 0 [m/s]近傍に収束しその後は約11500 [sec] から負側へ転じ，着地時に再び0 [m/s]に収束した。
 
-以下はガスのグラフとなる.
+以下はガスの密度と質量のグラフとなる.
 
 ![gas_state](https://okuma-space.github.io/balloon-simulation/png/balloon_gas_state_history_0.6.png)
 
@@ -48,7 +48,7 @@ Interactive Figures
 
 ガスの質量についても初期値として230 [kg]であったものが約6000 [sec]辺りから放出が始まり,段階的に約90 [kg]近傍まで下降していることが確認できる.
 
-以下は気球と表面積についてのグラフである.
+以下は気球の体積と表面積についてのグラフである.
 
 ![volume_area](https://okuma-space.github.io/balloon-simulation/png/balloon_volume_area_history_0.6.png)
 
