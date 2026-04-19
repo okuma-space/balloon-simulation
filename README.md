@@ -1,20 +1,30 @@
 # balloon-simulation
-learning project for balloon engineering
+A learning project for balloon engineering simulation
 
-自学習用のリポジトリです.
+本リポジトリは学習用途を目的としており，READMEおよびコードコメントは日本語で記述している．
 
-プロダクトではなく学習リポジトリのため効率重視でREAD ME、コメントともに日本語にて書いています.
+同様に計算部分もC++エンジン化せずにPythonにて試作している.
 
-同様に計算部分もC++エンジン化せずにPythonにて試作しています.
+作業ログのためにPRは作っているが,コードレビューは主にローカル環境で自主的に実施している．
 
-作業ログのためにPRは作っていますが,コードレビューは基本的にVsCode上でAIレビューを使っています.
+（AIツールも補助的に活用）
 
 # 結果サマリ
 [結果サマリ](https://okuma-space.github.io/balloon-simulation/report.html)
 
+# シミュレーション実行手順
+## 上下運動ダイナミクスシミュレーション
+気球モデルの初期値および計算条件は `config.json` に定義している．
+
+実行は以下のコマンド.
+```bash
+python scripts/plot_vertical_propagate.py 
+```
+
 # 学習文献
 - 宇宙工学シリーズ6 気球工学
 - 宇宙システム入門　ロケット・人工衛星の運動
+- 数値計算[新訂版]
 
 # issues
 現時点での改善アイディアなどはissuesに記載.
@@ -32,7 +42,7 @@ PRがmergeされる際にdeployステージが実行され、docs/report.mdをht
 
 # Directory Structure
 ## docs
-シミュレーション結果サマリ
+シミュレーション結果およびレポート
 
 ## src
 コア実装コード
@@ -58,7 +68,7 @@ PRがmergeされる際にdeployステージが実行され、docs/report.mdをht
 ## tools
 ビルド・Docker・CI・補助スクリプト
 
-# commandシート
+# Commands
 ## dockerコマンド
 ```bash
 docker build -t balloon-sim -f .\tools\Dockerfile .

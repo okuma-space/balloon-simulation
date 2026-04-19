@@ -4,6 +4,7 @@ import numpy as np
 import physics.fluid_mechanics as fluid_mechanics
 import physics.balloon_mechanics as balloon_mechanics
 import phys_const
+import numerics.runge_kutta as runge_kutta
 from systems.balloon_state_history import BalloonStateHistory
 from datetime import datetime, timedelta
 
@@ -65,19 +66,17 @@ def propagate(
 
     # propagationループ
     while current_time < end_time:
-        # 加速度[m/s^2]の計算
-        acceleration = calculate_vertical_acceleration(
+        # ルンゲクッタ法で位置と速度を伝搬更新する
+        position, velocity = propagate_trajectory(
             balloon,
             position_vector_list[-1],
             velocity_vector_list[-1],
             volume_list[-1],
             cross_sectional_area_list[-1],
             gas_density_list[-1],
+            current_time,
+            time_step_seconds,
         )
-
-        # 簡単なオイラー法で位置と速度を更新する
-        velocity = velocity_vector_list[-1] + acceleration * time_step_seconds
-        position = position_vector_list[-1] + velocity * time_step_seconds
 
         # 体積[m^3]を更新
         current_time_volume = balloon_mechanics.calculate_volume_at_altitude(
@@ -128,6 +127,127 @@ def propagate(
     )
 
 
+def propagate_trajectory(
+    balloon,
+    position_vector,
+    velocity_vector,
+    volume,
+    cross_sectional_area,
+    gas_density,
+    current_time,
+    time_step_seconds,
+):
+    """
+    ルンゲクッタ法を用いて、気球の位置と速度を更新する関数.
+    Parameters
+    ----------
+    balloon : BalloonSystem
+        気球オブジェクト
+    position_vector : np.ndarray
+        位置ベクトル [x, y, z] [m]
+    velocity_vector : np.ndarray
+        速度ベクトル [vx, vy, vz] [m/s]
+    volume : float
+        気球の体積 [m^3]
+    cross_sectional_area : float
+        気球の断面積 [m^2]
+    gas_density : float
+        気球内のガス密度 [kg/m^3]
+    time_step_seconds : float
+        タイムステップ [s]
+
+    Returns
+    -------
+    position : np.ndarray
+        更新された位置ベクトル [x, y, z] [m]
+    velocity : np.ndarray
+        更新された速度ベクトル [vx, vy, vz] [m/s]
+    """
+
+    # 状態ベクトルは [position, velocity]
+    state_vector = np.hstack((position_vector, velocity_vector))
+
+    # ルンゲクッタ法で状態ベクトルを更新する
+    state_vector = runge_kutta.rk4_step(
+        calculate_trajectory_derivative,
+        t=0.0,  # ルンゲクッタ法の中で使用される時刻は、現在の時刻からの相対的な時間であるため、0.0を渡す
+        y=state_vector,
+        dt=time_step_seconds,
+        balloon=balloon,
+        volume=volume,
+        cross_sectional_area=cross_sectional_area,
+        gas_density=gas_density,
+        current_time=current_time,  # ルンゲクッタ法の中で使用される時刻は、現在の時刻からの相対的な時間であるため、current_timeを渡す必要はないが、将来的に環境モデルの時間変化を考慮する際に使用する可能性があるため、引数として渡すようにしている
+    )
+
+    # 更新された状態ベクトルから位置と速度を抽出
+    position = state_vector[0:3]
+    velocity = state_vector[3:6]
+
+    # 更新された位置と速度を返す
+    return position, velocity
+
+
+def calculate_trajectory_derivative(
+    relative_time: float,
+    state_vector: np.ndarray,
+    balloon,
+    volume: float,
+    cross_sectional_area: float,
+    gas_density: float,
+    current_time: datetime,
+) -> np.ndarray:
+    """
+    状態ベクトル(位置と速度)の時間微分を計算する関数.
+    ルンゲクッタ法の中で呼び出されることを想定しており、追加の引数として気球のプロパティや環境条件を受け取る.
+    Parameters
+    ----------
+    relative_time : float
+        ルンゲクッタ法の中で使用される相対時刻 [s]
+    state_vector : np.ndarray
+        状態ベクトル.
+        ここではposition[m], velocity[m/s]を含む6次元のベクトルを想定している.
+        [position_x, position_y, position_z, velocity_x, velocity_y, velocity_z]
+    balloon : BalloonSystem
+        気球オブジェクト.
+    volume : float
+        気球の体積 [m^3]
+    cross_sectional_area : float
+        気球の断面積 [m^2]
+    gas_density : float
+        気球内のガス密度 [kg/m^3]
+    current_time : datetime
+        現在の時刻[UTC]
+        未使用の引数だが、将来的に環境モデルの時間変化を考慮する際に使用する可能性があるため、引数として受け取るようにしている.
+        例 太陽位置など
+
+    Returns
+    -------
+    np.ndarray
+        状態ベクトルの時間微分 [velocity, acceleration]
+    """
+    # 現在の時刻を計算.
+    # 絶対時刻にルンゲクッタ計算内部での相対時刻を加算する.
+    absolute_time = current_time + timedelta(seconds=relative_time)
+
+    # 状態ベクトルから位置と速度を抽出
+    position = state_vector[0:3]
+    velocity = state_vector[3:6]
+
+    # 加速度[m/s^2]の計算
+    acceleration = calculate_vertical_acceleration(
+        balloon,
+        position,
+        velocity,
+        volume,
+        cross_sectional_area,
+        gas_density,
+    )
+
+    # 状態ベクトルの時間微分は [velocity, acceleration]
+    return np.hstack((velocity, acceleration))
+
+
 def calculate_vertical_acceleration(
     balloon: BalloonSystem,
     position_vector: np.ndarray,
@@ -165,7 +285,6 @@ def calculate_vertical_acceleration(
     air_density = isothermal_model.calculate_density(altitude)
 
     # 浮力[N]を計算
-    # import pdb; pdb.set_trace()
     buoyant_force = fluid_mechanics.buoyant_force(air_density, gas_density, volume)
 
     # 抗力[N]を計算
@@ -177,7 +296,6 @@ def calculate_vertical_acceleration(
         balloon.drag_coefficient,
         cross_sectional_area,
     )[2]  # 鉛直方向の抗力のみを考慮
-    # import pdb; pdb.set_trace()
 
     # 合力(ネットフォース)[N]を計算する
     # 浮力[N] + 抗力[N] -重力[N] = ネットフォース[N]
