@@ -21,6 +21,8 @@ A learning project for balloon engineering simulation
 
 [結果サマリ](https://github.com/okuma-space/balloon-simulation/blob/main/docs/report.md)
 
+[ノート](https://github.com/okuma-space/balloon-simulation/blob/main/docs/note.md)
+
 # シミュレーション実行手順
 ## 上下運動ダイナミクスシミュレーション
 気球モデルの初期値および計算条件は `config.json` に定義している．
