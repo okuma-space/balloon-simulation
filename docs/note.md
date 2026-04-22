@@ -40,7 +40,7 @@ data/Logs-logs-2026-04-22 23_13_51.txt
 なおaltitudeについては7700 [m]ほどでデータが途絶えている.
 
 しかし回収地点と思われる位置は地図から読み取れた.
-![alt text](images/screenshots/image-31.png)
+![alt text](images/screenshots/image-3.png)
 
 風速については1枚目から見れるが,定数となっている.
 
