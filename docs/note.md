@@ -114,6 +114,7 @@ Latitude Longitude Value
 - Brouwse BucketからAWSサーバにアクセスし,右上でgfs.YYYYMMDD(ex. gfs.20260423)を入力
 - YYYYMMDDはプロダクトの日にちではなく,予報した日付
 - 目的は atom →　gfs.t06z.pgrb2.0p25.f072 t06は作成した時刻 00,06,12,18がある
+- さらにf072 pgrb2で72時間予報が絞り込める
 
 中身の確認
 
