@@ -12,3 +12,6 @@ __pycache__/
 # coverage
 .coverage
 htmlcov/
+
+# GFS data
+gfs.t06z.pgrb2.0p25.f072
