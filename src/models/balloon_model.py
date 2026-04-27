@@ -4,7 +4,7 @@ from models import gas
 class BalloonModel:
     def __init__(
         self,
-        payload_mass: float, # ペイロード質量[kg]
+        payload_mass: float,  # ペイロード質量[kg]
         payload_area: float,  # ペイロード表面積[m^2]
         payload_drag_coefficient: float,  # ペイロードのCD値/抗力係数 (無次元) 立方体では約1.1
         max_volume: float,  # 気球最大体積[m^3]

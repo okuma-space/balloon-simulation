@@ -135,8 +135,6 @@
 #         gas_temperature_list,
 #         cross_sectional_area_list,
 #     )
-from datetime import datetime, timedelta
-import numpy as np
 
 import physics.balloon_mechanics as balloon_mechanics
 import dynamics.propagate_state as propagate_state
@@ -148,6 +146,7 @@ from models.balloon_model import BalloonModel
 from simulation_config import SimulationConfig
 from initial_condition import InitialCondition
 from control.vent_schedule import VentSchedule
+
 
 def propagate(
     simulation_config: SimulationConfig,
@@ -242,7 +241,7 @@ def propagate(
                 previous_state.gas_temperature,
                 time_step_seconds,
             )
-        )   
+        )
 
         # 時刻更新
         current_time += time_step
@@ -269,10 +268,3 @@ def propagate(
         state_history.append(new_state)
 
     return state_history
-
-
-
-
-
-
-

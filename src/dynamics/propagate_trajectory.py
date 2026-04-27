@@ -1,10 +1,10 @@
-from models.balloon_model import BalloonModel
 import environment.atmosphere.isothermal_model as isothermal_model
 import numpy as np
 import physics.fluid_mechanics as fluid_mechanics
 import phys_const
 import numerics.runge_kutta as runge_kutta
 from datetime import datetime, timedelta
+from models.balloon_model import BalloonModel
 
 
 def propagate_trajectory(
@@ -99,7 +99,7 @@ def calculate_trajectory_derivative(
         状態ベクトル.
         ここではposition[m], velocity[m/s]を含む6次元のベクトルを想定している.
         [position_x, position_y, position_z, velocity_x, velocity_y, velocity_z]
-    balloon : BalloonSystem
+    balloon : BalloonModel
         気球オブジェクト.
     volume : float
         気球の体積 [m^3]
@@ -142,7 +142,7 @@ def calculate_trajectory_derivative(
 
 
 def calculate_vertical_acceleration(
-    balloon: BalloonSystem,
+    balloon: BalloonModel,
     position_vector: np.ndarray,
     velocity_vector: np.ndarray,
     gas_mass: float,
@@ -155,7 +155,7 @@ def calculate_vertical_acceleration(
 
     Parameters
     ----------
-    balloon : BalloonSystem
+    balloon : BalloonModel
         気球オブジェクト.
     position_vector : np.ndarray
         位置ベクトル [x, y, z] [m]
