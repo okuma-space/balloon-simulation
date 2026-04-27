@@ -1,7 +1,7 @@
 import numpy as np
 import environment.atmosphere.isothermal_model as isothermal_model
 import phys_const
-from systems.gas import LiftingGasType
+from models.gas import LiftingGasType
 
 
 def calculate_ground_volume(altitude: float, target_volume: float) -> float:

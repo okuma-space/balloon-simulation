@@ -19,9 +19,11 @@ A learning project for balloon engineering simulation
 
 実行条件や実装されたダイナミクスについてのサマリは以下にまとめた.
 
-[結果サマリ](https://github.com/okuma-space/balloon-simulation/blob/main/docs/report.md)
+- [結果サマリ : latest](https://github.com/okuma-space/balloon-simulation/blob/main/docs/report.md)
+- [結果サマリ : v1.0](https://github.com/okuma-space/balloon-simulation/blob/main/docs/reports/report_v1.0.md)
+- [ノート](https://github.com/okuma-space/balloon-simulation/blob/main/docs/note.md)
 
-[ノート](https://github.com/okuma-space/balloon-simulation/blob/main/docs/note.md)
+
 
 # シミュレーション実行手順
 ## 上下運動ダイナミクスシミュレーション

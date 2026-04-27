@@ -1,4 +1,4 @@
-from systems.balloon_system import BalloonSystem
+from models.balloon_model import BalloonModel
 import environment.atmosphere.isothermal_model as isothermal_model
 import numpy as np
 import physics.fluid_mechanics as fluid_mechanics
@@ -22,7 +22,7 @@ def propagate_trajectory(
     ルンゲクッタ法を用いて,気球の位置と速度を更新する関数.
     Parameters
     ----------
-    balloon : BalloonSystem
+    balloon : BalloonModel
         気球オブジェクト
     position_vector : np.ndarray
         位置ベクトル [x, y, z] [m]
