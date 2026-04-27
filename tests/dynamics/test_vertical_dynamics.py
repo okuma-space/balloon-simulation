@@ -72,7 +72,6 @@ def test_vertical_dynamics():
         vent_area=0.071,
         flow_coefficient=0.61,
         gas_type=gas.LiftingGasType.HELIUM,
-
     )
 
     # 初期条件
@@ -92,17 +91,13 @@ def test_vertical_dynamics():
         propagation_time=timedelta(seconds=3000),
     )
 
-
     from control.vent_schedule import VentSchedule
 
     vent_schedule = VentSchedule(windows=[])
 
     # シミュレーションの実行
     balloon_state_history = vertical_dynamics.propagate(
-        simulation_config,
-        initial_condition,
-        balloon,
-        vent_schedule
+        simulation_config, initial_condition, balloon, vent_schedule
     )
 
     # 最大高度が35000[m]近辺であることを検証する

@@ -1,5 +1,6 @@
 import numpy as np
-from datetime import datetime, timedelta
+from datetime import datetime
+
 
 class InitialCondition:
     def __init__(
