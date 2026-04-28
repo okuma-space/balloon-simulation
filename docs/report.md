@@ -195,14 +195,12 @@ version1.3として3D軌跡のplotを実装.
 [PR](https://github.com/okuma-space/balloon-simulation/pull/47)
 
 高度方向の上昇下降に加えて風速による水平方向の移動も再現されている.
-![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_1.3.png)
-![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_1.2_0.png)
 
-###### Figures large
+###### Figures 
 ![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_1.3.png)
 
 
-###### Interactive Figures large
+###### Interactive Figures 
 [trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_1.3.png)
 
 ___
