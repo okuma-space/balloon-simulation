@@ -201,7 +201,7 @@ version1.3として3D軌跡のplotを実装.
 
 
 ###### Interactive Figures 
-[trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_1.3.png)
+[trajectry](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_3D_trajectory_1.3.html)
 
 ___
 ___
