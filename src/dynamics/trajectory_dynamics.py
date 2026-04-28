@@ -8,6 +8,7 @@ def calculate_acceleration_vector(
     velocity_vector: np.ndarray,
     balloon_model: BalloonModel,
     out_density: float,
+    wind_vector: np.ndarray,
     gas_density: float,
     gas_mass: float,
     balloon_volume: float,
@@ -15,12 +16,10 @@ def calculate_acceleration_vector(
 ) -> np.ndarray:
     """
     気球の加速度ベクトルを計算する.
-
     外気密度, 気球内ガス密度, 気球体積, 速度ベクトルから,
-    鉛直方向の浮力・抗力・重力を計算し, 気球の加速度ベクトルを返す.
-
+    浮力・抗力・重力を計算し, 気球の加速度ベクトルを返す.
     本関数では z 軸正方向を上向きとし, 鉛直方向の運動のみを扱う.
-    x, y 方向の加速度は 0.0 とする.
+
 
     Parameters
     ----------
@@ -31,6 +30,8 @@ def calculate_acceleration_vector(
         payload_mass, balloon_drag_coefficient などを保持する.
     out_density : float
         外気密度 [kg/m^3].
+    wind_vector: np.ndarray,
+        風向ベクトル[m/s]
     gas_density : float
         気球内ガス密度 [kg/m^3].
     gas_mass : float
@@ -44,7 +45,6 @@ def calculate_acceleration_vector(
     -------
     np.ndarray
         気球の加速度ベクトル [ax, ay, az] [m/s^2].
-        現在は鉛直方向のみを扱うため [0.0, 0.0, az] を返す.
     """
 
     # 加速度[m/s^2]計算する
@@ -59,22 +59,24 @@ def calculate_acceleration_vector(
     # 風力は一旦0.0[m/s]固定で計算する
     drag_force = fluid_mechanics.drag_force(
         out_density,
-        [0.0, 0.0, 0.0],
+        wind_vector,
         velocity_vector,
         balloon_model.balloon_drag_coefficient,
         cross_section_area,
-    )[2]  # 鉛直方向の抗力のみを考慮
+    )
 
-    # 合力(ネットフォース)[N]を計算する
+    # 鉛直方向の合力(ネットフォース)[N]を計算する
     # 浮力[N] + 抗力[N] -ペイロード重力[N] = ネットフォース[N]
-    net_force = (
+    net_force_z = (
         buoyant_force
-        + drag_force
+        + drag_force[2]
         - (balloon_model.payload_mass) * phys_const.GRAVITY_ACCELERATION
     )
-    # 加速度[m/s^2]を計算
+
+    # 水平方向と鉛直方向を合成して三次元の加速度[m/s^2]を計算
     # ネットフォース[N] / 質量[kg] = 加速度[m/s^2]
-    acceleration = net_force / (balloon_model.payload_mass + gas_mass)
-    acceleration_vector = np.array([0.0, 0.0, acceleration])
+    acceleration_vector = np.array([drag_force[0], drag_force[1], net_force_z]) / (
+        balloon_model.payload_mass + gas_mass
+    )
 
     return acceleration_vector

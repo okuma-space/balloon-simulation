@@ -27,11 +27,11 @@ def buoyant_force(density_out: float, density_in: float, volume: float) -> float
 
 def drag_force(
     density: float,
-    wind_velocity: float,
-    target_velocity: float,
+    wind_velocity: np.ndarray,
+    target_velocity: np.ndarray,
     drag_coefficient: float,
     cross_sectional_area: float,
-) -> float:
+) -> np.ndarray:
     """
     抗力の計算式
     Parameters
@@ -60,7 +60,7 @@ def drag_force(
     # 気球工学 P.53 (2.62)
     # 抗力[N] = 0.5 * 流体の密度[kg/m^3]  * 抗力係数 * 物体の投影面積[m^2] * 相対速度ベクトル[m/s] * 相対速度ベクトルノルム[m/s]
     # 抗力として向きを考慮するために、相対速度ベクトルの符号を保持している。
-    return (
+    drag_force = (
         0.5
         * density
         * drag_coefficient
@@ -68,6 +68,8 @@ def drag_force(
         * relative_velocity
         * relative_velocity_norm
     )
+
+    return drag_force
 
 
 def calculate_density(mass: float, volume: float) -> float:
