@@ -2,6 +2,8 @@ import numpy as np
 import environment.atmosphere.isothermal_model as isothermal_model
 import phys_const
 from models.gas import LiftingGasType
+from models.balloon_model import BalloonModel
+from physics import fluid_mechanics
 
 
 def calculate_ground_volume(altitude: float, target_volume: float) -> float:
@@ -25,16 +27,14 @@ def calculate_ground_volume(altitude: float, target_volume: float) -> float:
 
     # 指定した高度での大気圧を計算
     air_pressure_at_altitude = isothermal_model.calculate_pressure(
-        air_density_at_altitude, altitude
+        air_density_at_altitude
     )
 
     # 地表面上での大気密度を計算
     air_density_at_ground = isothermal_model.calculate_density(0.0)
 
     # 地表面での大気圧を計算
-    air_pressure_at_ground = isothermal_model.calculate_pressure(
-        air_density_at_ground, 0.0
-    )
+    air_pressure_at_ground = isothermal_model.calculate_pressure(air_density_at_ground)
 
     # 地表体積の計算（ボイル則）
     ground_volume = target_volume * air_pressure_at_altitude / air_pressure_at_ground
@@ -185,7 +185,70 @@ def calculate_temperature(out_temperature: float, gas_temperature: float) -> flo
     float
         更新後のガス温度 [K]
     """
-    after_gas_temperature = (
-        out_temperature - gas_temperature
-    ) / 1000.0 + gas_temperature
-    return after_gas_temperature
+    delta_gas_temperature = (out_temperature - gas_temperature) / 2000.0
+    return delta_gas_temperature
+
+
+def calculate_derived_state_variables(
+    gas_temperature: float,
+    gas_mass: float,
+    position_vector: np.ndarray,
+    balloon_model: BalloonModel,
+    out_pressure: float | None = None,
+):
+    """
+    気球の独立状態変数から従属状態変数を計算する.
+    ----------
+    gas_temperature : .float
+        ガス温度[K]
+    gas_mass :  float
+        ガス質量[Kg]
+    position_vector :  np.ndarray
+        位置ベクトル[m]
+    balloon_model : BalloonModel
+        気球モデル
+    out_pressure : float
+        外気圧[Pa](省略可)
+    Returns
+    -------
+    np.ndarray
+        従属状態変数
+        [0] = 気球体積[m^3],
+        [1] = 気球断面積[m^2],
+        [2] = ガス密度[kg/m^3]
+    """
+
+    # 外気圧が与えられない時は計算する
+    if out_pressure is None:
+        altitude = position_vector[2]
+        # 外気密度[kg/m^3]
+        out_density = isothermal_model.calculate_density(altitude)
+
+        # 外気圧[Pa]
+        out_pressure = isothermal_model.calculate_pressure(out_density)
+
+    # 体積[m^3]
+    balloon_volume = calculate_volume_at_altitude(
+        out_pressure,
+        gas_temperature,
+        gas_mass,
+        balloon_model.gas_type,
+        balloon_model.max_volume,
+    )
+
+    # 断面積[m^2]
+    # ペイロード断面積が気球断面積を上回る場合はペイロード断面積を用いる
+    cross_sectional_area = sphere_cross_section_area(balloon_volume)
+    cross_sectional_area = max(cross_sectional_area, balloon_model.payload_area)
+
+    # ガス密度[kg/m^3]
+    gas_density = fluid_mechanics.calculate_density(gas_mass, balloon_volume)
+
+    return np.array(
+        [
+            balloon_volume,
+            cross_sectional_area,
+            gas_density,
+        ],
+        dtype=float,
+    )

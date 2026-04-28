@@ -19,10 +19,9 @@ A learning project for balloon engineering simulation
 
 実行条件や実装されたダイナミクスについてのサマリは以下にまとめた.
 
-- [結果サマリ : latest](https://github.com/okuma-space/balloon-simulation/blob/main/docs/report.md)
-- [結果サマリ : v1.0](https://github.com/okuma-space/balloon-simulation/blob/main/docs/reports/report_v1.0.md)
+- [結果サマリ:latest 水平運動シミュレーション開発中](https://github.com/okuma-space/balloon-simulation/blob/main/docs/report.md)
+- [結果サマリ:v1.0 上昇下降運動シミュレーション](https://github.com/okuma-space/balloon-simulation/blob/main/docs/reports/report_v1.0.md)
 - [ノート](https://github.com/okuma-space/balloon-simulation/blob/main/docs/note.md)
-
 
 
 # シミュレーション実行手順
@@ -31,7 +30,7 @@ A learning project for balloon engineering simulation
 
 実行は以下のコマンドからできる.
 ```bash
-python scripts/plot_vertical_propagate.py 
+python scripts/run_trajectory_simulation.py <気球コンフィグファイル名>
 ```
 
 # 学習文献
@@ -93,6 +92,11 @@ docker run -it --rm -v ${PWD}:/balloon-simulation balloon-sim bash
 ```bash
 ruff format src scripts tests
 ruff check src scripts tests --fix
+```
+
+スタイルチェックが厳格すぎるため導入を検討中であるが以下でpylintの実行も可能
+```bash
+pylint src scripts tests
 ```
 
 ## test

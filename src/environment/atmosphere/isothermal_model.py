@@ -38,7 +38,7 @@ def calculate_density(altitude: float) -> float:
     return density
 
 
-def calculate_pressure(density: float, altitude: float) -> float:
+def calculate_pressure(density: float) -> float:
     """
     圧力の計算式
     Parameters
