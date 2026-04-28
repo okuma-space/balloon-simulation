@@ -13,155 +13,173 @@ from simulation_config import SimulationConfig
 from dynamics import propagator
 from visualize import plot_balloon_state_history, plot_balloon_trajectry
 
-
 OUTPUT_DIR = Path("docs")
 
 
-def simulate_balloon_trajectory(
-    simulation_config,
-    initial_conditions,
-    balloon,
-    vent_schedule,
-) -> tuple[
-    np.ndarray,
-    np.ndarray,
-    np.ndarray,
-    np.ndarray,
-    np.ndarray,
-    np.ndarray,
-    np.ndarray,
-    np.ndarray,
-]:
-    """
-    指定された propagation_time にわたって気球の鉛直ダイナミクスをシミュレートし、
-    state の履歴配列を返す。
-    """
-    traj = propagator.propagate(
-        simulation_config,
-        initial_conditions,
-        balloon,
-        vent_schedule,
-    )
-
-    # 時刻, 位置, 速度の配列を取得
-    # 時刻は epoch_time からの経過秒数に変換
-    time_seconds = np.array(
-        [
-            (state.time - initial_conditions.epoch_time).total_seconds()
-            for state in traj.states
-        ],
-        dtype=float,
-    )
-    positions = np.array(
-        [state.position_vector for state in traj.states],
-        dtype=float,
-    )
-    velocities = np.array(
-        [state.velocity_vector for state in traj.states],
-        dtype=float,
-    )
-
-    # 高度と鉛直速度を抽出
-    altitude = positions[:, 2]
-    vertical_velocity = velocities[:, 2]
-
-    volume = np.array([state.volume for state in traj.states], dtype=float)
-    gas_density = np.array([state.gas_density for state in traj.states], dtype=float)
-    gas_mass = np.array([state.gas_mass for state in traj.states], dtype=float)
-    gas_temperature = np.array(
-        [state.gas_temperature for state in traj.states],
-        dtype=float,
-    )
-    area = np.array(
-        [state.cross_sectional_area for state in traj.states],
-        dtype=float,
-    )
-
-    return (
-        time_seconds,
-        altitude,
-        vertical_velocity,
-        volume,
-        gas_density,
-        gas_mass,
-        gas_temperature,
-        area,
-    )
-
-
-def output(
-    time_seconds,
-    altitude,
-    vertical_velocity,
-    volume,
-    gas_density,
-    gas_mass,
-    gas_temperature,
-    area,
-):
+def output(balloon_state_history):
 
     # 出力ファイルのパスを定義
-    html_path = OUTPUT_DIR / "html/balloon_posvel_trajectory.html"
-    png_path = OUTPUT_DIR / "images/generated/balloon_posvel_trajectory.png"
+    # 高度
+    vertical_history_html_path = OUTPUT_DIR / "html/balloon_vertical_trajectory.html"
+    vertical_history_png_path = (
+        OUTPUT_DIR / "images/generated/balloon_vertical_trajectory.png"
+    )
+
+    # 水平
+    horizon_trajectory_html_path = (
+        OUTPUT_DIR / "html/balloon_xy_position_trajectory.html"
+    )
+    horizon_trajectory_png_path = (
+        OUTPUT_DIR / "images/generated/balloon_xy_position_trajectory.png"
+    )
+    horizon_velocity_html_path = OUTPUT_DIR / "html/balloon_xy_velocity_trajectory.html"
+    horizon_velocity_png_path = (
+        OUTPUT_DIR / "images/generated/balloon_xy_velocity_trajectory.png"
+    )
+    horizon_history_html_path = (
+        OUTPUT_DIR / "html/balloon_horizontal_posvel_history.html"
+    )
+    horizon_history_png_path = (
+        OUTPUT_DIR / "images/generated/balloon_horizontal_posvel_history.png"
+    )
+
+    # 体積表面積
     volume_area_html_path = OUTPUT_DIR / "html/balloon_volume_area_history.html"
     volume_area_png_path = (
         OUTPUT_DIR / "images/generated/balloon_volume_area_history.png"
     )
+
+    # ガス(密度/質量)
     gas_state_html_path = OUTPUT_DIR / "html/balloon_gas_state_history.html"
     gas_state_png_path = OUTPUT_DIR / "images/generated/balloon_gas_state_history.png"
+
+    # 温度
     temperature_html_path = OUTPUT_DIR / "html/balloon_temperature_history.html"
     temperature_png_path = (
         OUTPUT_DIR / "images/generated/balloon_temperature_history.png"
     )
 
+    # epochからの経過秒数に変換
+    epoch_time = balloon_state_history.time_list[0]
+    time_seconds = np.array(
+        [
+            (time - epoch_time).total_seconds()
+            for time in balloon_state_history.time_list
+        ],
+        dtype=float,
+    )
+
+    # 位置・速度配列
+    position_array = np.array(
+        balloon_state_history.position_vector_list,
+        dtype=float,
+    )
+    velocity_array = np.array(
+        balloon_state_history.velocity_vector_list,
+        dtype=float,
+    )
+
+    # Z方向
+    altitude = position_array[:, 2]
+    vertical_velocity = velocity_array[:, 2]
+
+    # X-Y位置
+    position_x = position_array[:, 0]
+    position_y = position_array[:, 1]
+
+    # Vx-Vy速度
+    velocity_x = velocity_array[:, 0]
+    velocity_y = velocity_array[:, 1]
+
     # HTMLとPNGを保存
+    # 高度
     plot_balloon_trajectry.save_position_trajectory_html(
         time_seconds,
         altitude,
         vertical_velocity,
-        html_path,
+        vertical_history_html_path,
     )
     plot_balloon_trajectry.save_trajectory_png(
         time_seconds,
         altitude,
         vertical_velocity,
-        png_path,
+        vertical_history_png_path,
     )
 
+    # 水平
+    plot_balloon_trajectry.save_xy_position_trajectory_html(
+        position_x,
+        position_y,
+        horizon_trajectory_html_path,
+    )
+    plot_balloon_trajectry.save_xy_position_trajectory_png(
+        position_x,
+        position_y,
+        horizon_trajectory_png_path,
+    )
+
+    plot_balloon_trajectry.save_xy_velocity_trajectory_html(
+        velocity_x,
+        velocity_y,
+        horizon_velocity_html_path,
+    )
+    plot_balloon_trajectry.save_xy_velocity_trajectory_png(
+        velocity_x,
+        velocity_y,
+        horizon_velocity_png_path,
+    )
+    plot_balloon_trajectry.save_horizontal_position_velocity_html(
+        time_seconds,
+        position_x,
+        position_y,
+        velocity_x,
+        velocity_y,
+        horizon_history_html_path,
+    )
+    plot_balloon_trajectry.save_horizontal_position_velocity_png(
+        time_seconds,
+        position_x,
+        position_y,
+        velocity_x,
+        velocity_y,
+        horizon_history_png_path,
+    )
+    # 体積断面積
     plot_balloon_state_history.save_volume_area_history_html(
         time_seconds,
-        volume,
-        area,
+        balloon_state_history.volume_list,
+        balloon_state_history.cross_sectional_area_list,
         volume_area_html_path,
     )
     plot_balloon_state_history.save_volume_area_history_png(
         time_seconds,
-        volume,
-        area,
+        balloon_state_history.volume_list,
+        balloon_state_history.cross_sectional_area_list,
         volume_area_png_path,
     )
-
+    # ガス
     plot_balloon_state_history.save_gas_state_history_html(
         time_seconds,
-        gas_density,
-        gas_mass,
+        balloon_state_history.gas_density_list,
+        balloon_state_history.gas_mass_list,
         gas_state_html_path,
     )
     plot_balloon_state_history.save_gas_state_history_png(
         time_seconds,
-        gas_density,
-        gas_mass,
+        balloon_state_history.gas_density_list,
+        balloon_state_history.gas_mass_list,
         gas_state_png_path,
     )
 
+    # 温度
     plot_balloon_state_history.save_temperature_history_html(
         time_seconds,
-        gas_temperature,
+        balloon_state_history.gas_temperature_list,
         temperature_html_path,
     )
     plot_balloon_state_history.save_temperature_history_png(
         time_seconds,
-        gas_temperature,
+        balloon_state_history.gas_temperature_list,
         temperature_png_path,
     )
 
@@ -216,6 +234,10 @@ def main():
     # vent schedule
     vent_schedule = parse_vent_schedule_datetime(raw_vent_schedule)
 
+    # wind condition
+    # まずは無風条件 [m/s]
+    wind_vector = np.array([2.0, 2.0, 0.0], dtype=float)
+
     # initial conditions
     traj_cfg = config["trajectory"]
 
@@ -240,33 +262,16 @@ def main():
     )
 
     # simulation
-    (
-        time_seconds,
-        altitude,
-        vertical_velocity,
-        volume,
-        gas_density,
-        gas_mass,
-        gas_temperature,
-        area,
-    ) = simulate_balloon_trajectory(
+    balloon_state_history = propagator.propagate(
         simulation_config,
         initial_conditions,
         balloon,
         vent_schedule,
+        wind_vector,
     )
 
     # output
-    output(
-        time_seconds,
-        altitude,
-        vertical_velocity,
-        volume,
-        gas_density,
-        gas_mass,
-        gas_temperature,
-        area,
-    )
+    output(balloon_state_history)
 
 
 if __name__ == "__main__":

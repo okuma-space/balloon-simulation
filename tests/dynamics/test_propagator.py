@@ -7,11 +7,11 @@ from initial_condition import InitialCondition
 from simulation_config import SimulationConfig
 from control.vent_schedule import VentSchedule
 
-# 許容誤差27[%]
-REL_TOL = 0.27
+# 許容誤差24[%]
+REL_TOL = 0.24
 
 
-def test_vertical_dynamics():
+def test_propagator():
     """
     気球工学 P.16の事例に従い,記載されている科学気球モデルでの最高到達高度を検証する.
     """
@@ -45,10 +45,11 @@ def test_vertical_dynamics():
     )
 
     vent_schedule = VentSchedule(windows=[])
+    wind_vector = [0.0, 0.0, 0.0]
 
     # シミュレーションの実行
     balloon_state_history = propagator.propagate(
-        simulation_config, initial_condition, balloon, vent_schedule
+        simulation_config, initial_condition, balloon, vent_schedule, wind_vector
     )
 
     # 最大高度が35000[m]近辺であることを検証する

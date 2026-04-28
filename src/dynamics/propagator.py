@@ -36,6 +36,7 @@ def propagate(
     initial_condition: InitialCondition,
     balloon_model: BalloonModel,
     vent_schedule: VentSchedule,
+    wind_vector: np.ndarray,
 ) -> BalloonStateHistory:
     """
     指定された propagation_time にわたって気球の鉛直ダイナミクスをシミュレートする
@@ -105,6 +106,7 @@ def propagate(
             dt=time_step_seconds,
             balloon_model=balloon_model,
             vent_schedule=vent_schedule,
+            wind_vector=wind_vector,
             current_time=current_time,
             # ルンゲクッタ法の中で使用される時刻は、現在の時刻からの相対的な時間であるため、
             # current_timeを渡す必要はないが、将来的に環境モデルの時間変化を考慮する際に使用する可能性があるため、
@@ -160,6 +162,7 @@ def calculate_state_derivative(
     state_vector: np.ndarray,
     balloon_model: BalloonModel,
     vent_schedule,
+    wind_vector: np.ndarray,
     current_time: datetime,
 ) -> np.ndarray:
     """
@@ -218,12 +221,12 @@ def calculate_state_derivative(
     )
 
     # 内部状態モデルの時間微分を計算する
-    # ガス温度[K]
+    # ガス温度変化[K/s]
     delta_gas_temperature = thermal_dynamics.calculate_temperature(
         environment.out_temperature, state_vector[GAS_TEMPERATURE_INDEX]
     )
 
-    # ガス質量[Kg]
+    # ガス質量変化[Kg/s]
     gass_mass_rate = gas_mass_dynamics.calculate_gas_mass_rate(
         absolute_time,
         balloon_model,
@@ -240,10 +243,11 @@ def calculate_state_derivative(
         state_vector[VELOCITY_SLICE],
         balloon_model,
         environment.out_density,
+        wind_vector,
         derived_state_variables[GAS_DENSITY_INDEX],
         state_vector[GAS_MASS_INDEX],
         derived_state_variables[BALLOON_VOLUME_INDEX],
-        state_vector[CROSS_SECTIONAL_AREA_INDEX],
+        derived_state_variables[CROSS_SECTIONAL_AREA_INDEX],
     )
 
     # 状態ベクトルの時間微分

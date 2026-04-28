@@ -187,6 +187,32 @@ https://www.pdas.com/atmosTable1SI.html
 
 
 ## Appendix. 過去versionの検証ログ(保存/振り返り用)
+### version1.2
+version1.1として水平方向の風速の考慮を実装.
+
+ペイロード質量を1100 [kg],風速をx,y方向に1.0 [m/s]として以下に垂直方向の時系列推移と水平方向の時系列推移を並べる.
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_1.2_0.png)
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_vertical_trajectory_1.2_0.png)
+
+風速が一定なのでxもyも一定増加していることが確認できる.
+速度について,初期値から風速と同じ1 [m/s]へと加速し,以降それが維持されていることが確認できる.
+
+x-y平面軌跡見ると以下のようにx = yとして座標右上に移動していくことが確認できる.
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_1.2_1.png)
+
+
+最初のx,Vx及び y , Vyの推移について最初の120秒を抽出した.
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_posvel_trajectory_1.1_S.png)
+風を受けて徐々にVx, Vyが加速していき,風速である1 [m/s]まで加速していることが確認できる.
+
+質量を半分の550 [kg]にすると以下の通りとなる. ガスの質量があるため完全に倍ではないが,より早く加速して風速に到達する様子が見える.
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_posvel_trajectory_1.1_S.png)
+
+
+質量を1500 [kg]にすると以下の通りとなる. こちらもより遅く加速していくことが確認できる.
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_posvel_trajectory_1.1_S.png)
+
+
 ### version1.1
 version1.1としてpropagatorを統合
 
@@ -202,7 +228,7 @@ version1.1としてpropagatorを統合
 
 [Repository](https://github.com/okuma-space/balloon-simulation/tree/v1.1)
 
-[PR](https://github.com/okuma-space/balloon-simulation/pull/9)
+[PR](https://github.com/okuma-space/balloon-simulation/pull/43)
 
 
 #### small balloon
@@ -213,19 +239,19 @@ version1.1としてpropagatorを統合
   - ["2026-01-01T01:30:00Z", "2026-01-01T01:32:00Z"]
   
 ##### Figures small
-![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/balloon_posvel_trajectory_1.1_S.png)
-![volume_area](https://okuma-space.github.io/balloon-simulation/images/generated/balloon_volume_area_history_1.1_S.png)
-![gas_state](https://okuma-space.github.io/balloon-simulation/images/generated/balloon_gas_state_histor_1.1_S.png)
-![temperature](https://okuma-space.github.io/balloon-simulation/images/generated/balloon_temperature_history_1.1_S.png)
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_posvel_trajectory_1.1_S.png)
+![volume_area](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_volume_area_history_1.1_S.png)
+![gas_state](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_gas_state_history_1.1_S.png)
+![temperature](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_temperature_history_1.1_S.png)
 
 ##### Interactive Figures small
-[trajectry](https://okuma-space.github.io/balloon-simulation/html/balloon_posvel_trajectory_1.1_S.html)
+[trajectry](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_posvel_trajectory_1.1_S.html)
 
-[volume_area](https://okuma-space.github.io/balloon-simulation/html/balloon_volume_area_history_1.1_S.html)
+[volume_area](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_volume_area_history_1.1_S.html)
 
-[gas_state](https://okuma-space.github.io/balloon-simulation/html/balloon_gas_state_histor_1.1_S.html)
+[gas_state](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_gas_state_history_1.1_S.html)
 
-[temperature](https://okuma-space.github.io/balloon-simulation/html/balloon_temperature_history_1.1_S.html)
+[temperature](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_temperature_history_1.1_S.html)
 
 #### middle balloon
 - payload_mass: 500.0 [kg]
@@ -240,19 +266,19 @@ version1.1としてpropagatorを統合
   - ["2026-01-01T03:20:00Z", "2026-01-01T04:30:00Z"]
 
 ##### Figures middle
-![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/balloon_posvel_trajectory_1.1_M.png)
-![volume_area](https://okuma-space.github.io/balloon-simulation/images/generated/balloon_volume_area_history_1.1_M.png)
-![gas_state](https://okuma-space.github.io/balloon-simulation/images/generated/balloon_gas_state_histor_1.1_M.png)
-![temperature](https://okuma-space.github.io/balloon-simulation/images/generated/balloon_temperature_history_1.1_M.png)
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_posvel_trajectory_1.1_M.png)
+![volume_area](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_volume_area_history_1.1_M.png)
+![gas_state](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_gas_state_history_1.1_M.png)
+![temperature](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_temperature_history_1.1_M.png)
 
 ###### Interactive Figures middle
-[trajectry](https://okuma-space.github.io/balloon-simulation/html/balloon_posvel_trajectory_1.1_M.html)
+[trajectry](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_posvel_trajectory_1.1_M.html)
 
-[volume_area](https://okuma-space.github.io/balloon-simulation/html/balloon_volume_area_history_1.1_M.html)
+[volume_area](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_volume_area_history_1.1_M.html)
 
-[gas_state](https://okuma-space.github.io/balloon-simulation/html/balloon_gas_state_histor_1.1_M.html)
+[gas_state](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_gas_state_history_1.1_M.html)
 
-[temperature](https://okuma-space.github.io/balloon-simulation/html/balloon_temperature_history_1.1_M.html)
+[temperature](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_temperature_history_1.1_M.html)
 
 #### large balloon
 - payload_mass: 1100.0 [kg]
@@ -269,16 +295,16 @@ version1.1としてpropagatorを統合
   - ["2026-01-01T03:50:00Z", "2026-01-01T03:57:00Z"]
 
 ###### Figures large
-![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/balloon_posvel_trajectory_1.1_L.png)
-![volume_area](https://okuma-space.github.io/balloon-simulation/images/generated/balloon_volume_area_history_1.1_L.png)
-![gas_state](https://okuma-space.github.io/balloon-simulation/images/generated/balloon_gas_state_histor_1.1_L.png)
-![temperature](https://okuma-space.github.io/balloon-simulation/images/generated/balloon_temperature_history_1.1_L.png)
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_posvel_trajectory_1.1_L.png)
+![volume_area](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_volume_area_history_1.1_L.png)
+![gas_state](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_gas_state_history_1.1_L.png)
+![temperature](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_temperature_history_1.1_L.png)
 
 ###### Interactive Figures large
-[trajectry](https://okuma-space.github.io/balloon-simulation/html/balloon_posvel_trajectory_1.1_L.html)
+[trajectry](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_posvel_trajectory_1.1_L.html)
 
-[volume_area](https://okuma-space.github.io/balloon-simulation/html/balloon_volume_area_history_1.1_L.html)
+[volume_area](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_volume_area_history_1.1_L.html)
 
-[gas_state](https://okuma-space.github.io/balloon-simulation/html/balloon_gas_state_histor_1.1_L.html)
+[gas_state](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_gas_state_history_1.1_L.html)
 
-[temperature](https://okuma-space.github.io/balloon-simulation/html/balloon_temperature_history_1.1_L.html)
+[temperature](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_temperature_history_1.1_L.html)
