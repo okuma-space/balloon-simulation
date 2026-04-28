@@ -1,5 +1,7 @@
 
-# シミュレーション自習結果サマリ
+# シミュレーション自習結果サマリ_v2.0
+[previous version](https://github.com/okuma-space/balloon-simulation/blob/main/docs/reports/report_v1.0.md)
+
 ## 1.気球水平運動シミュレーション
 pythonにて簡易的な気球の水平シミュレーションを実装した.
 
@@ -8,8 +10,8 @@ TBD
 まとめ
 
 
-## 2 上下運動ダイナミクスモデル
-現在は鉛直方向のみの1自由度ダイナミクスを対象とし，以下の力学モデルを考慮している．
+## 2 運動ダイナミクスモデル
+現在は上下運動及び水平運動のダイナミクスを対象とし，以下の力学モデルを考慮している．
 
 また時間積分には4次のRunge-Kutta法を用いている．
 
@@ -24,19 +26,22 @@ V は気球体積 [m^3]，g は重力加速度 [m/s^2] である．
 （気球工学 P.15 (2.4)）
 
 ### 2.2 抗力モデル
-抗力は速度方向を考慮し，以下でモデル化する：
+抗力は相対速度の向きを考慮し，以下でモデル化する：
 ```bash
 F_d = (1/2) ρ C_d A |v_rel| v_rel
 ```
 ここで，ρ は外部流体密度 [kg/m^3]，C_d は抗力係数，A は投影面積 [m^2]，
 v_rel は流体に対する相対速度ベクトル [m/s] である．
-
-本モデルでは抗力の向きを表現するため，速度ベクトルの符号を保持した形で実装している．
-
+これは以下の式で与えられる.
+```bash
+v_rel = v_w - v_b
+```
+ここで，v_w は風速ベクトル [m/s]，v_b は気球の速度ベクトル [m/s]とする.
+本モデルでは抗力を三次元ベクトルとして計算し，水平方向の運動にもこの抗力ベクトルの x, y 成分を用いる.
+なおは抗力の向きを表現するため，速度ベクトルの符号を保持した形で実装している．
 （気球工学 P.53 (2.62)）
 
 なお抗力計算には3.1で示しす体積/断面積モデルを用いる.
-
 ### 2.3 合力モデルと鉛直方向加速度
 鉛直方向の合力 F_net は
 ```bash
@@ -48,11 +53,6 @@ F_net = F_b + F_d - m g
 ```bash
 a = F_net / m
 ```
-
-## 3 水平運動ダイナミクスモデル
-TBD
-
-
 
 ## 4 気球モデル
 気球の状態量として以下を考慮している.
@@ -188,29 +188,33 @@ https://www.pdas.com/atmosTable1SI.html
 
 ## Appendix. 過去versionの検証ログ(保存/振り返り用)
 ### version1.2
-version1.1として水平方向の風速の考慮を実装.
+version1.1として水平方向の一定風速の考慮を実装.
+
+[Repository](https://github.com/okuma-space/balloon-simulation/tree/v1.2)
+
+[PR](https://github.com/okuma-space/balloon-simulation/pull/45)
 
 ペイロード質量を1100 [kg],風速をx,y方向に1.0 [m/s]として以下に垂直方向の時系列推移と水平方向の時系列推移を並べる.
-![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_1.2_0.png)
 ![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_vertical_trajectory_1.2_0.png)
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_1.2_0.png)
 
 風速が一定なのでxもyも一定増加していることが確認できる.
 速度について,初期値から風速と同じ1 [m/s]へと加速し,以降それが維持されていることが確認できる.
 
 x-y平面軌跡見ると以下のようにx = yとして座標右上に移動していくことが確認できる.
-![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_1.2_1.png)
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_xy_position_trajectory_1.2_0.png)
 
 
 最初のx,Vx及び y , Vyの推移について最初の120秒を抽出した.
-![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_posvel_trajectory_1.1_S.png)
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_1.2_1.png)
 風を受けて徐々にVx, Vyが加速していき,風速である1 [m/s]まで加速していることが確認できる.
 
 質量を半分の550 [kg]にすると以下の通りとなる. ガスの質量があるため完全に倍ではないが,より早く加速して風速に到達する様子が見える.
-![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_posvel_trajectory_1.1_S.png)
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_1.2_2.png)
 
 
 質量を1500 [kg]にすると以下の通りとなる. こちらもより遅く加速していくことが確認できる.
-![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_posvel_trajectory_1.1_S.png)
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_1.2_3.png)
 
 
 ### version1.1

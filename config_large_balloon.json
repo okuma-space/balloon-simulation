@@ -1,6 +1,6 @@
 {
   "balloon": {
-    "payload_mass": 1500.0,
+    "payload_mass": 1100.0,
     "payload_area": 1.0,
     "payload_drag_coefficient": 1.1,
     "ground_volume": 1387.0,
@@ -28,7 +28,7 @@
   },
   "calculate": {
       "time_step_seconds": 1,
-      "save_state_interval_seconds": 1,
-      "propagation_duration_seconds": 120
+      "save_state_interval_seconds": 10,
+      "propagation_duration_seconds": 60000
   }
 }
