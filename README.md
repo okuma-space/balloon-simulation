@@ -9,12 +9,12 @@ A learning project for balloon engineering simulation
 
 # 結果サマリ
 
-気球の上昇下降水平運動シミュレーションを実施した.
+気球の飛翔ダイナミクスシミュレーションを実施した.
 
 実行結果の3D軌跡のグラフは以下となる.
 
 ![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_1.3.png)
-![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_1.2_0.png)
+[trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_1.3.png)
 
 実行条件や実装されたダイナミクスについてのサマリは以下にまとめた.
 
@@ -24,7 +24,7 @@ A learning project for balloon engineering simulation
 
 
 # シミュレーション実行手順
-## 上下運動ダイナミクスシミュレーション
+## 飛翔ダイナミクスシミュレーション
 気球モデルの初期値および計算条件は `config.json` に定義している．
 
 実行は以下のコマンドからできる.
