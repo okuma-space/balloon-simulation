@@ -402,3 +402,87 @@ def save_horizontal_position_velocity_html(
 
     output_path.parent.mkdir(parents=True, exist_ok=True)
     fig.write_html(str(output_path), include_plotlyjs="cdn")
+
+
+def save_xyz_position_trajectory_html(
+    position_x: np.ndarray,
+    position_y: np.ndarray,
+    position_z: np.ndarray,
+    output_path: Path,
+) -> None:
+    """X-Y-Z 三次元位置軌跡をプロットしてHTMLファイルに保存する。"""
+    fig = go.Figure()
+
+    fig.add_trace(
+        go.Scatter3d(
+            x=position_x,
+            y=position_y,
+            z=position_z,
+            mode="lines",
+            name="X-Y-Z Position Trajectory",
+            hovertemplate=(
+                "X: %{x:.1f} m<br>"
+                "Y: %{y:.1f} m<br>"
+                "Z: %{z:.1f} m"
+            ),
+        )
+    )
+
+    fig.update_layout(
+        title="Balloon X-Y-Z Position Trajectory",
+        scene=dict(
+            xaxis_title="X [m]",
+            yaxis_title="Y [m]",
+            zaxis_title="Z / Altitude [m]",
+        ),
+        legend=dict(x=0.01, y=0.99),
+    )
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.write_html(str(output_path), include_plotlyjs="cdn")
+
+
+def save_xyz_position_trajectory_png(
+    position_x: np.ndarray,
+    position_y: np.ndarray,
+    position_z: np.ndarray,
+    output_path: Path,
+) -> None:
+    """X-Y-Z 三次元位置軌跡をプロットしてPNGファイルに保存する。"""
+    fig = plt.figure(figsize=(9, 7))
+    ax = fig.add_subplot(111, projection="3d")
+
+    ax.plot(
+        position_x,
+        position_y,
+        position_z,
+        label="X-Y-Z Position Trajectory",
+    )
+
+    ax.scatter(
+        position_x[0],
+        position_y[0],
+        position_z[0],
+        marker="o",
+        s=40,
+        label="Start",
+    )
+
+    ax.scatter(
+        position_x[-1],
+        position_y[-1],
+        position_z[-1],
+        marker="x",
+        s=60,
+        label="End",
+    )
+
+    ax.set_xlabel("X [m]")
+    ax.set_ylabel("Y [m]")
+    ax.set_zlabel("Z / Altitude [m]")
+    ax.set_title("Balloon X-Y-Z Position Trajectory")
+    ax.legend()
+
+    output_path.parent.mkdir(parents=True, exist_ok=True)
+    fig.savefig(output_path, dpi=150, bbox_inches="tight")
+    plt.close(fig)

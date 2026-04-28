@@ -43,6 +43,14 @@ def output(balloon_state_history):
         OUTPUT_DIR / "images/generated/balloon_horizontal_posvel_history.png"
     )
 
+    # 3D
+    xyz_trajectory_html_path = (
+    OUTPUT_DIR / "html/balloon_3D_trajectory.html"
+    )
+    xyz_trajectory_png_path = (
+        OUTPUT_DIR / "images/generated/balloon_3D_trajectory.png"
+    )
+
     # 体積表面積
     volume_area_html_path = OUTPUT_DIR / "html/balloon_volume_area_history.html"
     volume_area_png_path = (
@@ -144,6 +152,24 @@ def output(balloon_state_history):
         velocity_y,
         horizon_history_png_path,
     )
+
+    # 3D
+    plot_balloon_trajectry.save_xyz_position_trajectory_html(
+    position_x,
+    position_y,
+    altitude,
+    xyz_trajectory_html_path,
+    )
+
+    plot_balloon_trajectry.save_xyz_position_trajectory_png(
+        position_x,
+        position_y,
+        altitude,
+        xyz_trajectory_png_path,
+    )
+
+
+
     # 体積断面積
     plot_balloon_state_history.save_volume_area_history_html(
         time_seconds,

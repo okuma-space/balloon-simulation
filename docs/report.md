@@ -187,8 +187,29 @@ https://www.pdas.com/atmosTable1SI.html
 
 
 ## Appendix. 過去versionの検証ログ(保存/振り返り用)
+### version1.3
+version1.3として3D軌跡のplotを実装.
+
+[Repository](https://github.com/okuma-space/balloon-simulation/tree/v1.3)
+
+[PR](https://github.com/okuma-space/balloon-simulation/pull/47)
+
+高度方向の上昇下降に加えて風速による水平方向の移動も再現されている.
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_1.3.png)
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_1.2_0.png)
+
+###### Figures large
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_1.3.png)
+
+
+###### Interactive Figures large
+[trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_1.3.png)
+
+___
+___
+
 ### version1.2
-version1.1として水平方向の一定風速の考慮を実装.
+version1.2として水平方向の一定風速の考慮を実装.
 
 [Repository](https://github.com/okuma-space/balloon-simulation/tree/v1.2)
 
@@ -216,6 +237,8 @@ x-y平面軌跡見ると以下のようにx = yとして座標右上に移動し
 質量を1500 [kg]にすると以下の通りとなる. こちらもより遅く加速していくことが確認できる.
 ![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_1.2_3.png)
 
+___
+___
 
 ### version1.1
 version1.1としてpropagatorを統合
