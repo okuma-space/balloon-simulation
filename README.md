@@ -9,13 +9,12 @@ A learning project for balloon engineering simulation
 
 # 結果サマリ
 
-気球の上昇下降運動シミュレーションを実施した.
+気球の上昇下降水平運動シミュレーションを実施した.
 
-実行結果の位置速度推移のグラフは以下となる.
+実行結果の3D軌跡のグラフは以下となる.
 
-![pos_vel](https://okuma-space.github.io/balloon-simulation/images/generated/balloon_posvel_trajectory_0.6.png)
-
-想定通り気球は上昇し,定常浮遊状態に移行したのちに,スケジュールされたガス排出によって下降してきていることが確認できた.
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_1.3.png)
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_1.2_0.png)
 
 実行条件や実装されたダイナミクスについてのサマリは以下にまとめた.
 
