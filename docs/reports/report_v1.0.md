@@ -279,6 +279,9 @@ version0.6として温度モデルを改善した.
 
 [temperature](https://okuma-space.github.io/balloon-simulation/html/balloon_temperature_history_0.6.html)
 
+___
+___
+
 
 ### version0.5
 version0.5としてガスの放出による下降制御を導入した.
@@ -311,6 +314,9 @@ version0.5としてガスの放出による下降制御を導入した.
 [gas_state](https://okuma-space.github.io/balloon-simulation/html/balloon_gas_state_history_0.5.html)
 
 [temperature](https://okuma-space.github.io/balloon-simulation/html/balloon_temperature_history_0.5.html)
+
+___
+___
 
 
 ### version0.4
