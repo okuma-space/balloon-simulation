@@ -1,0 +1,34 @@
+{
+  "balloon": {
+    "payload_mass": 1100.0,
+    "payload_area": 1.0,
+    "payload_drag_coefficient": 1.1,
+    "ground_volume": 1387.0,
+    "max_volume": 500000.0,
+    "initial_gas_mass": 250,
+    "initial_gas_temperature": 288.0,
+    "balloon_drag_coefficient": 0.047,
+    "vent_area": 0.19635,
+    "flow_coefficient": 0.61,
+    "gas_type": "HELIUM",
+     "vent_schedule": [
+      ["2026-01-01T01:30:00Z", "2026-01-01T01:40:00Z"],
+      ["2026-01-01T01:50:00Z", "2026-01-01T02:00:00Z"],
+      ["2026-01-01T02:10:00Z", "2026-01-01T02:20:00Z"],
+      ["2026-01-01T02:30:00Z", "2026-01-01T02:40:00Z"],
+      ["2026-01-01T02:50:00Z", "2026-01-01T03:00:00Z"],
+      ["2026-01-01T03:10:00Z", "2026-01-01T03:20:00Z"],
+      ["2026-01-01T03:30:00Z", "2026-01-01T03:40:00Z"],
+      ["2026-01-01T03:50:00Z", "2026-01-01T03:57:00Z"]]
+  },
+  "trajectory": {
+  "epoch": "2026-01-01T00:00:00Z",
+  "initial_position": [0.0, 0.0, 0.0],
+  "initial_velocity": [0.0, 0.0, 0.0]
+  },
+  "calculate": {
+      "time_step_seconds": 1,
+      "save_state_interval_seconds": 10,
+      "propagation_duration_seconds": 60000
+  }
+}

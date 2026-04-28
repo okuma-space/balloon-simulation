@@ -35,3 +35,14 @@ def rk4_step(
     k3 = func(t + 0.5 * dt, y + 0.5 * dt * k2, *args_for_func, **kwargs_for_func)
     k4 = func(t + dt, y + dt * k3, *args_for_func, **kwargs_for_func)
     return y + (dt / 6.0) * (k1 + 2.0 * k2 + 2.0 * k3 + k4)
+
+
+def euler_step(
+    func, t: float, y: np.ndarray, dt: float, *args_for_func, **kwargs_for_func
+) -> np.ndarray:
+    """
+    試験用オイラー
+    """
+    k1 = func(t, y, *args_for_func, **kwargs_for_func)
+
+    return y + dt * k1
