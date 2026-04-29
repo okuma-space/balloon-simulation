@@ -73,13 +73,13 @@ X-Y平面軌跡とVX-VY平面軌跡は以下となる.
 
 ![xy_trajectory](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_xy_position_trajectory_2.0.png)
 
-![xy_trajectory](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_xy_velocity_trajectory_2.0.png)
+![VxVy_trajectory](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_xy_velocity_trajectory_2.0.png)
 
 Interactive Figures
 
 [xy_trajectory](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_xy_position_trajectory_2.0.html)
 
-[xy_trajectory](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_xy_velocity_trajectory_2.0.html)
+[VxVy_trajectory](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_xy_velocity_trajectory_2.0.html)
 
 
 風速ベクトルに従って気球が水平移流している様子が確認できる.
