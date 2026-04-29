@@ -13,7 +13,7 @@ Interactive Figures
 
 [3D_trajectory](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_3D_trajectory_2.0.html)
 
-風速については，6.3に示すように高度依存性は考慮せず，時刻に対する風速ベクトルの時系列モデルとして与えている.  
+風速については5.3に示すように高度依存性は考慮せず，時刻に対する風速ベクトルの時系列モデルとして与えている.  
 各時刻間の風速は線形補間により計算する.
 
 X軸は北方向,Y軸は東方向,Z軸は天頂方向を想定しているが,原則Z軸方向は0で固定している.
@@ -151,7 +151,7 @@ F_net = F_b + F_d - m g
 a = F_net / m
 ```
 
-## 4 気球モデル
+## 3 気球モデル
 気球の状態量として以下を考慮している.
 ```bash
 - 時刻 [UTC]
@@ -170,7 +170,7 @@ a = F_net / m
 - 排気弁の流量係数 約 0.61
 ```
 
-### 4.1 体積/面積モデル
+### 3.1 体積/面積モデル
 気球の形状は常に真球と仮定しており,体積は理想気体の状態方程式より以下の簡易モデルで計算をしている.
 ```bash
 PV = mR_sT
@@ -193,7 +193,7 @@ A=πr^2
 ```
 なおペイロードも断面積を保持しており,現在は簡易モデルとして有効断面積を max(気球断面積, ペイロード断面積) で近似して抗力計算に用いている.
 
-### 4.2 熱モデル
+### 3.2 熱モデル
 大気温度は 5.2 の分層大気温度モデルを用いており,内部温度は以下の簡易モデルで更新している.
 ```bash
 T_in,new = T_in,old + (T_out - T_in,old) / 2000
@@ -204,7 +204,7 @@ T_in,new = T_in,old + (T_out - T_in,old) / 2000
 
 熱遅れの詳細,日射,放射冷却などは考慮していない.
 
-### 4.3 内部圧力モデル
+### 3.3 内部圧力モデル
 内部圧力は理想気体の状態方程式を用いて以下で計算をしている.
 ```bash
 P = mRsT / V
@@ -213,8 +213,8 @@ P = mRsT / V
 
 現在は内部圧力は体積計算には用いておらず,4.1の下降制御時の内外圧力差計算にのみ用いている.
 
-## 5 制御モデル
-### 5.1 下降制御
+## 4 制御モデル
+### 4.1 下降制御
 現在簡易的に排気弁からのガス排出による下降制御をシミュレートしている．
 
 排気による浮揚ガスの体積流量 Q [m³/s] は以下で近似する（ref. 気球工学 P56 式 (2.79)）
@@ -237,10 +237,10 @@ https://wiki.sustainabletechnologies.ca/wiki/Flow_through_an_orifice
 
 現在排気はスケジュール式により制御しており，configファイルにて排気イベント（開始時刻・終了時刻の組）のリストを定義している．
 
-## 6 Environment models(環境モデル)
+## 5 Environment models(環境モデル)
 現在のシミュレーションで採用している環境モデルについて示す.
 
-### 6.1 Isothermal Atmosphere model(等温大気モデル)
+### 5.1 Isothermal Atmosphere model(等温大気モデル)
 大気密度の計算は等温大気モデルを採用しenvironment/atomosphere/isothermal_model.pyにて計算している.
 
 1976 US Standard Atmosphere Table と密度値を比較し，相対誤差が概ね10 [%]以内であることを確認している。
@@ -253,7 +253,7 @@ https://wiki.sustainabletechnologies.ca/wiki/Flow_through_an_orifice
 #### Interactive Figures
 [graph](https://okuma-space.github.io/balloon-simulation/html/isothermal_density.html)
 
-### 6.2 Layered Temperature Model(分層大気温度モデル)
+### 5.2 Layered Temperature Model(分層大気温度モデル)
 大気温度の計算は1976 US Standard Atmosphere Tableをベースに以下のように分層化した.
 ```bash
 - 1層(0~12[km])
@@ -283,7 +283,7 @@ https://www.pdas.com/atmosTable1SI.html
 [graph](https://okuma-space.github.io/balloon-simulation/html/layered_temperature.html)
 
 
-### 6.3 風速モデル
+### 5.3 風速モデル
 風速は高度依存性を持たないものと仮定し，時刻ごとに変動する簡易モデルとして扱う.
 
 予報は[時刻[UTC], Vx [m/s],Vy [m/s],Vz [m/s]] のベクトルのリストで定義しており,任意の時刻における風速ベクトルは前後の時刻の予報値から線形補間して計算する.
