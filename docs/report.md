@@ -60,25 +60,25 @@ vent schedule
 
 高度推移は以下となる.
 
-![vertival_trajectory](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_vertical_trajectory_2.0.png)
+![vertical_trajectory](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_vertical_trajectory_2.0.png)
 
 Interactive Figures
 
-[vertival_trajectory](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_vertical_trajectory_2.0.html)
+[vertical_trajectory](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_vertical_trajectory_2.0.html)
 
 V1.0と同様に放球後に定常浮遊高度まで上昇し,定常浮遊状態に移行したのちvent scheduleに従ったガス放出後に高度を低下させ地表に帰還している事が確認できる.
 
 X-Y平面軌跡とVX-VY平面軌跡は以下となる.
 
-![pos_vel](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_xy_position_trajectory_2.0.png)
+![xy_trajectory](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_xy_position_trajectory_2.0.png)
 
-![pos_vel](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_xy_velocity_trajectory_2.0.png)
+![xy_trajectory](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_xy_velocity_trajectory_2.0.png)
 
 Interactive Figures
 
-[pos_vel](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_xy_position_trajectory_2.0.html)
+[xy_trajectory](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_xy_position_trajectory_2.0.html)
 
-[pos_vel](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_xy_velocity_trajectory_2.0.html)
+[xy_trajectory](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_xy_velocity_trajectory_2.0.html)
 
 
 風力に従って気球が流されている様子がシミュレートできていることが確認できる.
@@ -86,17 +86,17 @@ Interactive Figures
 
 X,VX,Y,VYについての時刻推移のプロットは以下となる.
 
-![pos_vel](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_2.0.png)
+![xy_pos_vel](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_2.0.png)
 
 Interactive Figures
 
-[pos_vel](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_horizontal_posvel_history_2.0.html)
+[xy_pos_vel](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_horizontal_posvel_history_2.0.html)
 
 
 最終的には放球地点からX軸方向に約11 [km], Y軸方向に約30 [km]程の離れた地点に着地している.
 
 また放球直後の30秒のプロットを拡大すると以下のようになる.
-![pos_vel](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_2.0_1.png)
+![xy_pos_vel](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_2.0_1.png)
 
 時間をかけて風速を追随していることが確認できる.
 
