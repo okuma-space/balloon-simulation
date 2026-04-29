@@ -3,11 +3,100 @@
 [previous version](https://github.com/okuma-space/balloon-simulation/blob/main/docs/reports/report_v1.0.md)
 
 ## 1.気球水平運動シミュレーション
-pythonにて簡易的な気球の水平シミュレーションを実装した.
+pythonにて簡易的な気球の飛翔シミュレーションを実装した.
 
-TBD
+気球のパラメタ及び計算条件はconfig_middle_balloon.jsonにて定義しており,シミュレーション実行結果となる3D軌跡のプロットはは以下となる.
+
+![pos_vel](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_2.0.png)
+
+Interactive Figures
+
+[pos_vel](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_3D_trajectory_2.0.html)
+
+
+wind forecast
+```bash
+  ["2026-01-01T00:00:00Z", -0.6, 13.1, 0.0],
+  ["2026-01-01T00:15:00Z", -2.3, 11.0, 0.0],
+  ["2026-01-01T00:30:00Z",  1.1, 15.4, 0.0],
+  ["2026-01-01T00:45:00Z", -1.6, 16.2, 0.0],
+  ["2026-01-01T01:00:00Z", -3.0, 13.6, 0.0],
+  ["2026-01-01T01:15:00Z", -1.4, 10.5, 0.0],
+  ["2026-01-01T01:30:00Z",  0.8, 11.8, 0.0],
+  ["2026-01-01T01:45:00Z",  1.6, 14.9, 0.0],
+  ["2026-01-01T02:00:00Z", -0.9, 15.2, 0.0],
+  ["2026-01-01T02:15:00Z", -1.8, 13.7, 0.0],
+  ["2026-01-01T02:30:00Z", -3.4, 12.1, 0.0],
+  ["2026-01-01T02:45:00Z", -2.1, 10.9, 0.0],
+  ["2026-01-01T03:00:00Z",  0.4, 11.6, 0.0],
+  ["2026-01-01T03:15:00Z",  0.2, 13.3, 0.0],
+  ["2026-01-01T06:15:00Z",  0, 10, 0.0]
+```
+
+
+vent schedule
+```bash
+- 2026-01-01T00:00:00Z 離陸
+- 2026-01-01T01:40:00Z ガスの放出開始
+  - 2026-01-01T01:50:00Z ガスの放出終了
+- 2026-01-01T02:00:00Z ガスの放出開始
+  - 2026-01-01T02:10:00Z ガスの放出終了
+- 2026-01-01T02:20:00Z ガスの放出開始
+  - 2026-01-01T02:30:00Z ガスの放出終了
+- 2026-01-01T02:40:00Z ガスの放出開始
+  - 2026-01-01T02:50:00Z ガスの放出終了
+- 2026-01-01T03:00:00Z ガスの放出開始
+  - 2026-01-01T03:10:00Z ガスの放出終了
+- 2026-01-01T03:20:00Z ガスの放出開始
+  - 2026-01-01T03:28:00Z ガスの放出終了
+- 2026-01-01T03:20:00Z ガスの放出開始
+  - 2026-01-01T04:30:00Z ガスの放出終了
+```
+
+
+
+高度推移は以下となる.
+
+![pos_vel](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_posvel_trajectory_2.0.png)
+
+Interactive Figures
+
+[pos_vel](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_posvel_trajectory_2.0.html)
+
+V1.0と同様に放球後に定常浮遊高度まで上昇し,定常浮遊状態に移行したのちvent scheduleに従ったガス放出後に高度を低下させ地表に帰還している事が確認できる.
+
+X-Y平面軌跡とVX-VY平面軌跡は以下となる.
+
+![pos_vel](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_posvel_trajectory_2.0.png)
+
+![pos_vel](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_posvel_trajectory_2.0.png)
+
+Interactive Figures
+
+[pos_vel](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_posvel_trajectory_2.0.html)
+
+[pos_vel](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_posvel_trajectory_2.0.html)
+
+
+風力に従って気球が流されている様子がシミュレートできていることが確認できる.
+
+
+X,VX,Y,VYについての時刻推移のプロットは以下となる.
+
+![pos_vel](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_posvel_trajectory_2.0.png)
+
+Interactive Figures
+
+[pos_vel](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_posvel_trajectory_2.0.html)
+
+
+最終的には放球地点からX軸方向に約11 [km], Y軸方向に約30 [km]程の離れた地点に着地している.
+
+![pos_vel](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_horizontal_posvel_history_2.0_1.png)
 
 まとめ
+- 風力による水平運動を考慮した3D飛翔軌跡をシミュレーション再現できた.
+- 風力により放球地点からX軸方向に約11 [km], Y軸方向に約30 [km]程の離れた地点に着地することが確認できた.
 
 
 ## 2 運動ダイナミクスモデル
@@ -42,6 +131,7 @@ v_rel = v_w - v_b
 （気球工学 P.53 (2.62)）
 
 なお抗力計算には3.1で示しす体積/断面積モデルを用いる.
+
 ### 2.3 合力モデルと鉛直方向加速度
 鉛直方向の合力 F_net は
 ```bash
@@ -184,6 +274,35 @@ https://www.pdas.com/atmosTable1SI.html
 
 #### Interactive Figures
 [graph](https://okuma-space.github.io/balloon-simulation/html/layered_temperature.html)
+
+
+### 6.3 風速モデル
+風速高度に対して一定であると仮定し,時刻ごとに変動する簡易モデルで計算をしている. 予報は[時刻[UTC], Vx [m/s],Vy [m/s],Vz [m/s]] のベクトルのリストで定義しており,任意の時刻に対して前後の予報から線形補間する事で計算している.
+
+X軸は北方向,Y軸は東方向,Z軸は天頂方向を想定しているが,原則Z軸方向は0で固定している.
+
+例として以下の予報から作成されるモデルは以下のようになる.
+```bash
+  ["2026-01-01T00:00:00Z", -0.6, 13.1, 0.0],
+  ["2026-01-01T00:15:00Z", -2.3, 11.0, 0.0],
+  ["2026-01-01T00:30:00Z",  1.1, 15.4, 0.0],
+  ["2026-01-01T00:45:00Z", -1.6, 16.2, 0.0],
+  ["2026-01-01T01:00:00Z", -3.0, 13.6, 0.0],
+  ["2026-01-01T01:15:00Z", -1.4, 10.5, 0.0],
+  ["2026-01-01T01:30:00Z",  0.8, 11.8, 0.0],
+  ["2026-01-01T01:45:00Z",  1.6, 14.9, 0.0],
+  ["2026-01-01T02:00:00Z", -0.9, 15.2, 0.0],
+  ["2026-01-01T02:15:00Z", -1.8, 13.7, 0.0],
+  ["2026-01-01T02:30:00Z", -3.4, 12.1, 0.0],
+  ["2026-01-01T02:45:00Z", -2.1, 10.9, 0.0],
+  ["2026-01-01T03:00:00Z",  0.4, 11.6, 0.0],
+  ["2026-01-01T03:15:00Z",  0.2, 13.3, 0.0],
+  ["2026-01-01T06:15:00Z",  0, 10, 0.0]
+```
+
+![wind_forecast](https://okuma-space.github.io/balloon-simulation/images/generated/wind_forecast_velocity_history)
+
+
 
 
 ## Appendix. 過去versionの検証ログ(保存/振り返り用)

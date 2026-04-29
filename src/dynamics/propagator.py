@@ -36,7 +36,7 @@ def propagate(
     initial_condition: InitialCondition,
     balloon_model: BalloonModel,
     vent_schedule: VentSchedule,
-    wind_vector: np.ndarray,
+    wind_forecast: list[tuple[datetime, float, float, float]],
 ) -> BalloonStateHistory:
     """
     指定された propagation_time にわたって気球の鉛直ダイナミクスをシミュレートする
@@ -106,7 +106,7 @@ def propagate(
             dt=time_step_seconds,
             balloon_model=balloon_model,
             vent_schedule=vent_schedule,
-            wind_vector=wind_vector,
+            wind_forecast=wind_forecast,
             current_time=current_time,
             # ルンゲクッタ法の中で使用される時刻は、現在の時刻からの相対的な時間であるため、
             # current_timeを渡す必要はないが、将来的に環境モデルの時間変化を考慮する際に使用する可能性があるため、
@@ -162,7 +162,7 @@ def calculate_state_derivative(
     state_vector: np.ndarray,
     balloon_model: BalloonModel,
     vent_schedule,
-    wind_vector: np.ndarray,
+    wind_forecast: list[tuple[datetime, float, float, float]],
     current_time: datetime,
 ) -> np.ndarray:
     """
@@ -208,7 +208,7 @@ def calculate_state_derivative(
     altitude = state_vector[POSITION_SLICE][2]
 
     # 外部環境モデルの更新
-    environment = environment_state.calculate_environment(altitude)
+    environment = environment_state.calculate_environment(altitude,wind_forecast,current_time)
 
     # 従属状態変数を計算
     # [0] = 気球体積[m^3],
@@ -243,7 +243,7 @@ def calculate_state_derivative(
         state_vector[VELOCITY_SLICE],
         balloon_model,
         environment.out_density,
-        wind_vector,
+        environment.wind_vector,
         derived_state_variables[GAS_DENSITY_INDEX],
         state_vector[GAS_MASS_INDEX],
         derived_state_variables[BALLOON_VOLUME_INDEX],
