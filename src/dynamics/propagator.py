@@ -208,7 +208,9 @@ def calculate_state_derivative(
     altitude = state_vector[POSITION_SLICE][2]
 
     # 外部環境モデルの更新
-    environment = environment_state.calculate_environment(altitude,wind_forecast,current_time)
+    environment = environment_state.calculate_environment(
+        altitude, wind_forecast, current_time
+    )
 
     # 従属状態変数を計算
     # [0] = 気球体積[m^3],

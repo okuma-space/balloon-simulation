@@ -216,6 +216,7 @@ def parse_vent_schedule_datetime(
     )
     return VentSchedule(windows=windows)
 
+
 def parse_wind_forecast(
     raw_wind_forecast: list[list],
 ) -> list[tuple[datetime, float, float, float]]:
@@ -242,6 +243,7 @@ def parse_wind_forecast(
         )
         for item in raw_wind_forecast
     ]
+
 
 def load_config(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
@@ -287,10 +289,6 @@ def main():
         [["2026-01-01T00:00:00Z", 0.0, 0.0, 0.0]],
     )
     wind_forecast = parse_wind_forecast(raw_wind_forecast)
-
-    # wind condition
-    # まずは無風条件 [m/s]
-    wind_vector = np.array([2.0, 2.0, 0.0], dtype=float)
 
     # initial conditions
     traj_cfg = config["trajectory"]
