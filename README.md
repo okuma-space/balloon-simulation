@@ -3,15 +3,14 @@ A learning project for balloon engineering simulation
 
 本リポジトリは学習用途を目的としており，READMEおよびコードコメントは日本語で記述している．
 
-同様に計算部分もC++エンジン化せずにPythonにて試作している.
+計算部分もC++エンジン化せず，まずはモデル検証と可視化を優先してPythonで試作している.
 
 作業ログのためにPRは作っているが,コードレビューは主にローカル環境で自主的に実施している．
 
 # 結果サマリ
 
-気球の飛翔ダイナミクスシミュレーションを実施した.
-
-実行結果の3D軌跡のグラフは以下となる.
+気球の浮力・抗力・排気制御・時変風モデルを考慮した飛翔ダイナミクスシミュレーションを実施した.
+以下は，打ち上げ地点を原点とする局所直交座標系における3次元軌跡である.  
 
 ![3D_trajectory](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_2.0.png)
 
@@ -70,8 +69,8 @@ PRがmergeされる際にdeployステージが実行され、docs/report.mdをht
 ### environment
 外部環境モデル（大気・風・重力場など）
 
-### systems
-統合システムモデル（気球・ロケットなどのドメインモデル）
+### models
+気球モデル・状態履歴・ガス種別などのデータモデル
 
 ## scripts
 シミュレーション実行・解析スクリプト
