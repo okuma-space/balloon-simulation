@@ -13,8 +13,8 @@ A learning project for balloon engineering simulation
 
 実行結果の3D軌跡のグラフは以下となる.
 
-![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_1.3.png)
-[trajectry](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_3D_trajectory_1.3.html)
+![trajectry](https://okuma-space.github.io/balloon-simulation/images/generated/v1/balloon_3D_trajectory_2.0.png)
+[trajectry](https://okuma-space.github.io/balloon-simulation/html/v1/balloon_3D_trajectory_2.0.html)
 
 実行条件や実装されたダイナミクスについてのサマリは以下にまとめた.
 

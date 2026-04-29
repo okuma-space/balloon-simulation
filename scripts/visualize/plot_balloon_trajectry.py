@@ -420,11 +420,7 @@ def save_xyz_position_trajectory_html(
             z=position_z,
             mode="lines",
             name="X-Y-Z Position Trajectory",
-            hovertemplate=(
-                "X: %{x:.1f} m<br>"
-                "Y: %{y:.1f} m<br>"
-                "Z: %{z:.1f} m"
-            ),
+            hovertemplate=("X: %{x:.1f} m<br>Y: %{y:.1f} m<br>Z: %{z:.1f} m"),
         )
     )
 

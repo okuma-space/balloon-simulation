@@ -44,12 +44,8 @@ def output(balloon_state_history):
     )
 
     # 3D
-    xyz_trajectory_html_path = (
-    OUTPUT_DIR / "html/balloon_3D_trajectory.html"
-    )
-    xyz_trajectory_png_path = (
-        OUTPUT_DIR / "images/generated/balloon_3D_trajectory.png"
-    )
+    xyz_trajectory_html_path = OUTPUT_DIR / "html/balloon_3D_trajectory.html"
+    xyz_trajectory_png_path = OUTPUT_DIR / "images/generated/balloon_3D_trajectory.png"
 
     # 体積表面積
     volume_area_html_path = OUTPUT_DIR / "html/balloon_volume_area_history.html"
@@ -155,10 +151,10 @@ def output(balloon_state_history):
 
     # 3D
     plot_balloon_trajectry.save_xyz_position_trajectory_html(
-    position_x,
-    position_y,
-    altitude,
-    xyz_trajectory_html_path,
+        position_x,
+        position_y,
+        altitude,
+        xyz_trajectory_html_path,
     )
 
     plot_balloon_trajectry.save_xyz_position_trajectory_png(
@@ -167,8 +163,6 @@ def output(balloon_state_history):
         altitude,
         xyz_trajectory_png_path,
     )
-
-
 
     # 体積断面積
     plot_balloon_state_history.save_volume_area_history_html(
@@ -222,6 +216,32 @@ def parse_vent_schedule_datetime(
     )
     return VentSchedule(windows=windows)
 
+def parse_wind_forecast(
+    raw_wind_forecast: list[list],
+) -> list[tuple[datetime, float, float, float]]:
+    """
+    config から読み込んだ wind_forecast を datetime 付きの配列へ変換する.
+
+    Parameters
+    ----------
+    raw_wind_forecast : list[list]
+        各要素は [time, vx, vy, vz] の形式.
+        time は ISO8601 文字列, vx/vy/vz は風速成分 [m/s].
+
+    Returns
+    -------
+    list[tuple[datetime, float, float, float]]
+        各要素を (time, vx, vy, vz) に変換した風速予報.
+    """
+    return [
+        (
+            datetime.fromisoformat(item[0].replace("Z", "+00:00")),
+            float(item[1]),
+            float(item[2]),
+            float(item[3]),
+        )
+        for item in raw_wind_forecast
+    ]
 
 def load_config(path: str) -> dict:
     with open(path, "r", encoding="utf-8") as f:
@@ -260,6 +280,14 @@ def main():
     # vent schedule
     vent_schedule = parse_vent_schedule_datetime(raw_vent_schedule)
 
+    # wind forecast
+    # config に wind_forecast が無い場合は無風条件にする
+    raw_wind_forecast = config.get(
+        "wind_forecast",
+        [["2026-01-01T00:00:00Z", 0.0, 0.0, 0.0]],
+    )
+    wind_forecast = parse_wind_forecast(raw_wind_forecast)
+
     # wind condition
     # まずは無風条件 [m/s]
     wind_vector = np.array([2.0, 2.0, 0.0], dtype=float)
@@ -293,7 +321,7 @@ def main():
         initial_conditions,
         balloon,
         vent_schedule,
-        wind_vector,
+        wind_forecast,
     )
 
     # output
