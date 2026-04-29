@@ -45,11 +45,11 @@ def test_propagator():
     )
 
     vent_schedule = VentSchedule(windows=[])
-    wind_vector = [0.0, 0.0, 0.0]
+    wind_forecast = [[datetime.fromisoformat("2026-01-01T00:00:00+00:00"), 0.0, 0.0, 0.0]]
 
     # シミュレーションの実行
     balloon_state_history = propagator.propagate(
-        simulation_config, initial_condition, balloon, vent_schedule, wind_vector
+        simulation_config, initial_condition, balloon, vent_schedule, wind_forecast
     )
 
     # 最大高度が35000[m]近辺であることを検証する

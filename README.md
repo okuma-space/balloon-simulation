@@ -18,7 +18,7 @@ A learning project for balloon engineering simulation
 
 実行条件や実装されたダイナミクスについてのサマリは以下にまとめた.
 
-- [結果サマリ:latest 水平運動シミュレーション開発中](https://github.com/okuma-space/balloon-simulation/blob/main/docs/report.md)
+- [結果サマリ:latest 3D飛翔シミュレーション](https://github.com/okuma-space/balloon-simulation/blob/main/docs/report.md)
 - [結果サマリ:v1.0 上昇下降運動シミュレーション](https://github.com/okuma-space/balloon-simulation/blob/main/docs/reports/report_v1.0.md)
 - [ノート](https://github.com/okuma-space/balloon-simulation/blob/main/docs/note.md)
 
